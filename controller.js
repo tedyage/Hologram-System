@@ -35,7 +35,7 @@ var addController = function(router,dir){
         return f.endsWith(".js");
     });
     //遍历该数组
-    for(var file in files){
+    for(var file of files){
         file = path.join(dir,file);
         var mapping = require(file);
         addMapping(router,mapping);

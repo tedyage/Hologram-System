@@ -6,17 +6,13 @@ const controller = require("./controller");
 
 //定义koa类对象
 var app = new koa();
-//输出请求的信息
-app.use(async(ctx,next)=>{
-    console.log(`${ctx.request.method} ${ctx.request.path}`);
-    await next();
-});
+
 //输出请求的用时（毫秒）
 app.use(async(ctx,next)=>{
     var startTime = Date.now();
     await next();
     var processTime = Date.now()-startTime;
-    console.log(`${ctx.request.path} procceeded in ${processTime}ms.`);
+    console.log(`${ctx.request.method} ${ctx.request.path} procceeded in ${processTime}ms.`);
 })
 //引用获取静态文件的方法
 app.use(static_file("/static/"));
