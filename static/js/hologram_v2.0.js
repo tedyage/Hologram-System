@@ -8,6 +8,7 @@ var rotateTypeArr=[],scaleTypeArr=[];
 var scene;
 var init_scene = function(){
 	scene = new THREE.Scene();
+	console.log("init_scene");
 }
 init_scene();
 
@@ -19,6 +20,7 @@ var init_light = function(){
 	directionallight.castShadow = true;
 	scene.add(ambientlight);
 	scene.add(directionallight);
+	console.log("init_light");
 }
 init_light();
 
@@ -37,12 +39,14 @@ var init_renderer = function(){
 	}else{
 		canvas.style.top = (height-renderer_height)/2+'px';
 	}
-	document.body.appendChild(canvas);
+	$("#canvas").append(canvas);   
+	console.log("init_renderer");
+
 }
 init_renderer();
 
 //定义模型
-var fbx_arr = ['asset/source/threejs_mars.fbx','asset/source/threejs_marscloud.fbx'];
+var fbx_arr = ["/static/asset/threejs_mars.fbx","/static/asset/threejs_marscloud.fbx"];
 var model_arr=new Array();
 var init_models = function(){
 	fbx_arr.forEach(function(fbx,index){
@@ -53,6 +57,7 @@ var init_models = function(){
 			scaleTypeArr.push(model.scale.x);
 			scene.add(model);
 			model_arr.push(model);
+			console.log("init_models");
 		});
 	});
 }
@@ -84,14 +89,14 @@ var right_view = new view(view_size*2,view_size,view_size,view_size,position,up)
 var views=[front_view,left_view,back_view,right_view];
 
 //定义播放
-var rotateSpeed = 0.01;
+/*var rotateSpeed = 0.01;
 var update = function(){
 	if(touchDown)
 		return;
 	model_arr.forEach(function(model){
 		model.rotation.y += rotateSpeed;
 	})
-}
+}*/
 
 var render = function(){
 	views.forEach(function(view,index){
@@ -119,7 +124,7 @@ var render = function(){
 
 var gameloop = function(){
 	requestAnimationFrame(gameloop);
-	update();
+	//update();
 	render();
 }
 
