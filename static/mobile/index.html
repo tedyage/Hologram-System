@@ -9,11 +9,22 @@
         <script type="text/javascript" src="/static/js/vue.js"></script>
         <script type="text/javascript" src="/static/js/three.js"></script>
         <script type="text/javascript" src="/static/js/inflate.min.js"></script>
-        <script type="text/javascript" src="/static/js/FBXLoader.js"></script>        
+        <script type="text/javascript" src="/static/js/FBXLoader.js"></script>       
+        <script type="text/javascript" src="/static/js/stats.min.js"></script>       
     </head>
-    <body>
+    <body>       
         <div id="canvas">
+            <canvas :style="canvasStyle"></canvas>
+            <div id="control" @touchstart.prevent="touchstart" @touchmove.prevent="touchmove" @touchend.prevent="touchend"></div>  
+            <div id="data">
+                <!-- <p>touch1 x is {{touch1.x}}, y is {{touch1.y}}</p>
+                <p>touchdown is {{touchdown}}</p>
+                <p>touchstatus is {{touch_status}}</p>
+                <p>touchDistance is {{touchDistance}}</p>
+                <p>currentScale is {{currentScale}}</p> -->
+            </div>         
         </div>
-        <script type="text/javascript" src="/static/js/hologram_v2.0.js"></script>
+        <script type="text/javascript" src="/static/js/hologram_v3.0.js"></script>
+        <script type="text/javascript" src="/static/js/mobileloop.js"></script>
     </body>
 </html>

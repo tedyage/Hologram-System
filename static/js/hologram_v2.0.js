@@ -12,6 +12,16 @@ var init_scene = function(){
 }
 init_scene();
 
+//定义测试摄像机
+var camera;
+var init_camera = function(){
+	camera = new THREE.PerspectiveCamera(75,1,0.1,1000,0);
+	camera.position.fromArray([0.0,0.0,250.0]);
+	camera.up.fromArray([0,1,0]);
+	camera.lookAt(new THREE.Vector3(0,0,0));
+};
+init_camera();
+
 //定义光照
 var ambientlight, directionallight;
 var init_light = function(){
@@ -53,18 +63,20 @@ var init_models = function(){
 		var loader = new THREE.FBXLoader();
 		loader.load(fbx,function(model){
 			model.receiveShadow = true;
-			rotateTypeArr.push(model.rotation) ;
-			scaleTypeArr.push(model.scale.x);
+			//rotateTypeArr.push(model.rotation) ;
+			//scaleTypeArr.push(model.scale.x);
 			scene.add(model);
-			model_arr.push(model);
+			//model_arr.push(model);
 			console.log("init_models");
 		});
 	});
 }
 init_models();
 
+
+
 //定义视口参数
-var view = function(left,top,width,height,position,up){
+/* var view = function(left,top,width,height,position,up){
 	this.left = left;
 	this.top = top;
 	this.width = width;
@@ -86,7 +98,7 @@ var front_view = new view(view_size,view_size*2,view_size,view_size,position,up)
 var back_view = new view(view_size,0,view_size,view_size,position,up);
 var left_view = new view(0,view_size,view_size,view_size,position,up);
 var right_view = new view(view_size*2,view_size,view_size,view_size,position,up);
-var views=[front_view,left_view,back_view,right_view];
+var views=[front_view,left_view,back_view,right_view]; */
 
 //定义播放
 /*var rotateSpeed = 0.01;
@@ -99,7 +111,7 @@ var update = function(){
 }*/
 
 var render = function(){
-	views.forEach(function(view,index){
+	/* views.forEach(function(view,index){
 		var camera;		
 		if(index==0){
 			//front_camera
@@ -119,7 +131,8 @@ var render = function(){
 		renderer.setScissorTest( true );		
 		renderer.setClearColor(new THREE.Color(0x000000));
 		renderer.render(scene,camera);
-	});	
+	});	 */
+	renderer.render(scene,camera)
 }
 
 var gameloop = function(){
