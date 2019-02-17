@@ -165,7 +165,7 @@ var hologram_vm = new Vue({
                 this.renderer.setViewport(this.views[view].x,this.views[view].y,this.views[view].width,this.views[view].height);
                 this.renderer.setScissor(this.views[view].x,this.views[view].y,this.views[view].width,this.views[view].height);
                 this.renderer.setScissorTest(true);
-                this.renderer.setClearColor(new THREE.Color(0x000000));
+                this.renderer.setClearColor(new THREE.Color(0x000000));               
                 this.renderer.render(this.scene,camera);
             }            
         },
@@ -335,3 +335,8 @@ var hologram_vm = new Vue({
         this.init_Renderer();     
     }
 });
+
+window.onresize = function(){
+    hologram_vm.width = window.innerWidth;
+    hologram_vm.height = window.innerHeight;
+}
