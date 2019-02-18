@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="/static/css/mobile.css"/>
         <script type="text/javascript" src="/static/js/jquery.js"></script>
         <script type="text/javascript" src="/static/js/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
         <script type="text/javascript" src="/static/js/three.js"></script>
         <script type="text/javascript" src="/static/js/inflate.min.js"></script>
         <script type="text/javascript" src="/static/js/FBXLoader.js"></script>       
@@ -18,14 +19,12 @@
             <canvas :style="canvasStyle"></canvas>
             <div id="control" @touchstart.prevent="touchstart" @touchmove.prevent="touchmove" @touchend.prevent="touchend"></div>  
             <div id="data">
-                <!-- <p>touch1 x is {{touch1.x}}, y is {{touch1.y}}</p>
-                <p>touchdown is {{touchdown}}</p>
-                <p>touchstatus is {{touch_status}}</p>
-                <p>touchDistance is {{touchDistance}}</p>
-                <p>currentScale is {{currentScale}}</p> -->
-                <!-- <p>width is {{width}}</p>
-                <p>height is {{height}}</p>
-                <p>scene children is {{scene.children.length}}</p> -->
+                <p>camera fov is {{camera.fov}}</p>
+                <p>camera aspect is {{camera.aspect}}</p>
+                <p>camera near is {{camera.near}}</p>
+                <p>camera far is {{camera.far}}</p>
+                <p>camera position is x:{{camera.position.x}}, y:{{camera.position.y}}, z:{{camera.position.z}}</p>
+                <p>camera up is x:{{camera.up.x}}, y:{{camera.up.y}}, z:{{camera.up.z}}</p>
             </div>         
         </div>
         <script type="text/javascript" src="/static/js/hologram_v3.0.js"></script>

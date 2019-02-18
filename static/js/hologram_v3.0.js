@@ -16,14 +16,7 @@ var hologram_vm = new Vue({
         stats:null, 
         scene:{},
         renderer:{},
-        camera:{
-            fov:0,
-            aspect:1,
-            near:0,
-            far:1,
-            position:[0.0,0.0,0.0],
-            up:[0,1,0]
-        },
+        camera:{},
         lights:{
             ambient_lights:[],
             directional_lights:[],
@@ -107,22 +100,62 @@ var hologram_vm = new Vue({
         },
         //初始化场景数据
         init_data:function(){
-            
+            this.$resource('/api/getdata').get()
+            .then(function(res){
+                if(res.status === 200){
+                    //初始化摄像机
+                    this.init_Camera(res.body.camera);
+                    //初始化光照
+                    this.init_Lights(res.body.lights);
+                    //this.load_Lights();
+                    /* this.lights.ambient_lights = res.body.lights.ambientLight||this.lights.ambientLight;
+                    this.lights.directional_lights = res.body.lights.directionalLight||this.lights.directionalLight;
+                    this.load_Lights(); */
+                    //初始化fbx文件名数组
+                    this.fbx_arr = res.body.fbx||this.fbx_arr;
+                    //this.load_Models(); 
+                    //初始化旋转速度
+                    //this.rotateSpeed = res.body.rotation.speed||this.rotateSpeed;
+                    //初始化缩放参数
+                    //this.scaleSpeed = res.body.scale.speed||this.scaleSpeed;
+                    //this.min_Scale = res.body.scale.min_scale||this.min_Scale;
+                    //this.max_Scale = res.body.scale.max_Scale||this.max_Scale;
+                }else if(res.status === 400){
+                    alert(res.body.code);
+                }
+            },function(err){
+                console.error(err);
+                alert("error");
+            });
         },
         //初始化摄像机
-        init_Camera:function(fov,aspect,near,far,position,up){
-            this.camera = new THREE.PerspectiveCamera(fov,aspect,near,far);
-            this.camera.position.fromArray(position);
-            this.camera.up.fromArray(up);
+        init_Camera:function(data){
+            this.camera = new THREE.PerspectiveCamera(data.fov,data.aspect,data.near,data.far);
+            this.camera.position.fromArray(data.position);
+            this.camera.up.fromArray(data.up);
             console.log("init_Camera");
         },
         //初始化光照
-        init_Lights:function(){
-            var ambientLight = new THREE.AmbientLight('0xf0f0f0',1.0);
+        init_Lights:function(data){
+            console.log(data);
+            for(var light in data){
+                if(data[light]&&data[light].length>0){
+                    if(light=="ambientLight"){                       
+                        var ambientLight = new THREE.AmbientLight(data[light].color,data[light].intensity);
+                        this.lights.ambient_lights.push(ambientLight);
+                    }else if(light=="directionalLight"){
+                        var directionalLight = new THREE.DirectionalLight(data[light].color,data[light].intensity);
+                        directionalLight.castShadow = true;
+                        this.lights.directional_lights.push(directionalLight);
+                    }
+                }
+            }
+
+            /* var ambientLight = new THREE.AmbientLight(0xf0f0f0,1.0);
             this.lights.ambient_lights.push(ambientLight);
-            var directionalLight = new THREE.DirectionalLight('0xffffff',0.6);
+            var directionalLight = new THREE.DirectionalLight(0xffffff,0.6);
             directionalLight.castShadow = true;
-            this.lights.directional_lights.push(directionalLight);        
+            this.lights.directional_lights.push(directionalLight);     */    
         },
         //将光照加入到场景中
         load_Lights:function(){
@@ -334,18 +367,19 @@ var hologram_vm = new Vue({
     },
     created:function(){
         console.log("The data is bounded to vm...");           
-        this.init_Scene();          
+        this.init_Scene();   
+        this.init_data();       
     },
     mounted:function(){
         console.log("The content of $el has loaded in the dom element...");   
         this.init_Stats(); 
-        this.init_Renderer(); 
+        //this.init_Renderer(); 
 
-        this.init_Camera(75,1,0.1,1000.0,[0.0,0.0,250.0],[0,1,0]);
+        /* this.init_Camera();
         this.init_Lights();
-        this.load_Lights();
-        this.init_Fbx();
-        this.load_Models();          
+        this.load_Lights(); */
+        //this.init_Fbx();
+                 
     }
 });
 

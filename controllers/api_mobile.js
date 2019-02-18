@@ -7,13 +7,13 @@ var hologram = {
         position:[0.0,0.0,250.0],
         up:[0,1,0]
     },
-    light:{
+    lights:{
         ambientLight:[{
-            color:'0xf0f0f0',
+            color:0xf0f0f0,
             intensity:1.0
         }],
         directionalLight:[{
-            color:'0xffffff',
+            color:0xffffff,
             intensity:0.6
         }]
     },

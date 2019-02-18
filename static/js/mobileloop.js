@@ -4,4 +4,4 @@ var gameloop = function(){
     hologram_vm.update();
 };
 
-gameloop();
+//gameloop();
