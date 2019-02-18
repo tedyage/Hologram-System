@@ -2,6 +2,7 @@
 const koa = require('koa');
 const static_file = require("./static_file");
 const template = require("./template");
+const rest = require("./rest");
 const controller = require("./controller");
 
 //定义koa类对象
@@ -24,6 +25,8 @@ app.use(template("views",{
     watch:isdevelopment,
     throwOnUndefined:false
 }));
+//引用Restify的方法
+app.use(rest.Restify());
 //引用controller的方法
 app.use(controller());
 

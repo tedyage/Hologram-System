@@ -16,7 +16,14 @@ var hologram_vm = new Vue({
         stats:null, 
         scene:{},
         renderer:{},
-        camera:{},
+        camera:{
+            fov:0,
+            aspect:1,
+            near:0,
+            far:1,
+            position:[0.0,0.0,0.0],
+            up:[0,1,0]
+        },
         lights:{
             ambient_lights:[],
             directional_lights:[],
@@ -29,15 +36,15 @@ var hologram_vm = new Vue({
         model_arr:[],   
         rotate_arr:[],
         scale_arr:[], 
-        rotateSpeed:0.01, 
-        scaleSpeed:0.01, 
+        rotateSpeed:0, 
+        scaleSpeed:0, 
         touchdown:false,
         timeout:0,
         touch1:new ScreenPosition(0,0),
         touch2:new ScreenPosition(0,0),
         rotateScale:1.0, 
         min_Scale:1.0,
-        max_Scale:1.5,
+        max_Scale:1.0,
         touch_status:'',       
     },
     computed:{        
@@ -98,6 +105,10 @@ var hologram_vm = new Vue({
             this.scene = new THREE.Scene();
             console.log("init_Scene");
         },
+        //初始化场景数据
+        init_data:function(){
+            
+        },
         //初始化摄像机
         init_Camera:function(fov,aspect,near,far,position,up){
             this.camera = new THREE.PerspectiveCamera(fov,aspect,near,far);
@@ -107,9 +118,9 @@ var hologram_vm = new Vue({
         },
         //初始化光照
         init_Lights:function(){
-            var ambientLight = new THREE.AmbientLight(0xf0f0f0);
+            var ambientLight = new THREE.AmbientLight('0xf0f0f0',1.0);
             this.lights.ambient_lights.push(ambientLight);
-            var directionalLight = new THREE.DirectionalLight(0xffffff,0.6);
+            var directionalLight = new THREE.DirectionalLight('0xffffff',0.6);
             directionalLight.castShadow = true;
             this.lights.directional_lights.push(directionalLight);        
         },
@@ -149,6 +160,7 @@ var hologram_vm = new Vue({
                 });
             }
         },
+        
         //渲染图像
         render:function(){
             for(var view in this.views){
@@ -186,16 +198,16 @@ var hologram_vm = new Vue({
                     model.rotation.x = 0;
                 }
 
-                if(model.scale.x>1){
+                if(model.scale.x>this.min_Scale){
                     model.scale.x-=this.scaleSpeed;
                     model.scale.y-=this.scaleSpeed;
                     model.scale.z-=this.scaleSpeed;
-                }else if(model.scale.x<1){
+                }else if(model.scale.x<this.min_Scale){
                     model.scale.x+=this.scaleSpeed;
                     model.scale.y+=this.scaleSpeed;
                     model.scale.z+=this.scaleSpeed;
                 }else{
-                    model.scale.x = 1;
+                    model.scale.x = this.min_Scale;
                 }
             }
         },
@@ -322,17 +334,18 @@ var hologram_vm = new Vue({
     },
     created:function(){
         console.log("The data is bounded to vm...");           
-        this.init_Scene();  
-        this.init_Camera(75,1,0.1,1000.0,[0.0,0.0,250.0],[0,1,0]);
-        this.init_Lights();
-        this.load_Lights();
-        this.init_Fbx();
-        this.load_Models();       
+        this.init_Scene();          
     },
     mounted:function(){
         console.log("The content of $el has loaded in the dom element...");   
         this.init_Stats(); 
-        this.init_Renderer();     
+        this.init_Renderer(); 
+
+        this.init_Camera(75,1,0.1,1000.0,[0.0,0.0,250.0],[0,1,0]);
+        this.init_Lights();
+        this.load_Lights();
+        this.init_Fbx();
+        this.load_Models();          
     }
 });
 
