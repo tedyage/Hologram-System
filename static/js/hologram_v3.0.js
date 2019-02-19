@@ -25,7 +25,6 @@ var hologram_vm = new Vue({
             rectarea_lights:[],
             spot_lights:[]
         },               
-        fbx_arr:[],
         model_arr:[],   
         rotate_arr:[],
         scale_arr:[], 
@@ -107,19 +106,14 @@ var hologram_vm = new Vue({
                     this.init_Camera(res.body.camera);
                     //初始化光照
                     this.init_Lights(res.body.lights);
-                    //this.load_Lights();
-                    /* this.lights.ambient_lights = res.body.lights.ambientLight||this.lights.ambientLight;
-                    this.lights.directional_lights = res.body.lights.directionalLight||this.lights.directionalLight;
-                    this.load_Lights(); */
-                    //初始化fbx文件名数组
-                    this.fbx_arr = res.body.fbx||this.fbx_arr;
-                    //this.load_Models(); 
+                    //初始化fbx数组
+                    this.init_Models(res.body.fbx);
                     //初始化旋转速度
-                    //this.rotateSpeed = res.body.rotation.speed||this.rotateSpeed;
+                    this.rotateSpeed = res.body.rotation.speed||this.rotateSpeed;
                     //初始化缩放参数
-                    //this.scaleSpeed = res.body.scale.speed||this.scaleSpeed;
-                    //this.min_Scale = res.body.scale.min_scale||this.min_Scale;
-                    //this.max_Scale = res.body.scale.max_Scale||this.max_Scale;
+                    this.scaleSpeed = res.body.scale.speed||this.scaleSpeed;
+                    this.min_Scale = res.body.scale.min_scale||this.min_Scale;
+                    this.max_Scale = res.body.scale.max_Scale||this.max_Scale;
                 }else if(res.status === 400){
                     alert(res.body.code);
                 }
@@ -137,37 +131,23 @@ var hologram_vm = new Vue({
         },
         //初始化光照
         init_Lights:function(data){
-            console.log(data);
+            //console.log(data);
             for(var light in data){
                 if(data[light]&&data[light].length>0){
                     if(light=="ambientLight"){                       
                         var ambientLight = new THREE.AmbientLight(data[light].color,data[light].intensity);
                         this.lights.ambient_lights.push(ambientLight);
+                        this.scene.add(ambientLight);
                     }else if(light=="directionalLight"){
                         var directionalLight = new THREE.DirectionalLight(data[light].color,data[light].intensity);
                         directionalLight.castShadow = true;
                         this.lights.directional_lights.push(directionalLight);
+                        this.scene.add(directionalLight);
                     }
                 }
             }
-
-            /* var ambientLight = new THREE.AmbientLight(0xf0f0f0,1.0);
-            this.lights.ambient_lights.push(ambientLight);
-            var directionalLight = new THREE.DirectionalLight(0xffffff,0.6);
-            directionalLight.castShadow = true;
-            this.lights.directional_lights.push(directionalLight);     */    
-        },
-        //将光照加入到场景中
-        load_Lights:function(){
-            for(var light in this.lights){
-                if(this.lights[light]&&this.lights[light].length>0){
-                    for(var item of this.lights[light]){
-                        this.scene.add(item);
-                    }
-                }
-            }
-            console.log("load_Lights") 
-        },       
+            console.log("init_Lights");
+        },    
         //初始化渲染器
         init_Renderer:function(){
             //初始化渲染器
@@ -175,27 +155,24 @@ var hologram_vm = new Vue({
             this.renderer.setSize(this.renderer_size,this.renderer_size,false);                               
             console.log("init_Renderer")
         },
-        //初始化fbx数组
-        init_Fbx:function(){
-            this.fbx_arr=["/static/asset/threejs_mars.fbx","/static/asset/threejs_marscloud.fbx"];
-        },
-        //载入模型
-        load_Models:function(){            
-            for(var fbx of this.fbx_arr){
+        //初始化模型
+        init_Models:function(data){
+            for(var fbx of data){
                 var loader = new THREE.FBXLoader();
                 loader.load(fbx,function(model){                   
                     model.receiveShadow = true;                   
                     hologram_vm.scene.add(model);
-                    console.log("load_Models");
                     hologram_vm.model_arr.push(model);
                     hologram_vm.rotate_arr.push(model.rotation);
                     hologram_vm.scale_arr.push(model.scale.x);
                 });
             }
-        },
-        
+            console.log("init_Models");
+        },        
         //渲染图像
         render:function(){
+            if(!this.camera.id)
+                return;
             for(var view in this.views){
                 var camera;
                 if(view==='left_view'){
@@ -373,13 +350,7 @@ var hologram_vm = new Vue({
     mounted:function(){
         console.log("The content of $el has loaded in the dom element...");   
         this.init_Stats(); 
-        //this.init_Renderer(); 
-
-        /* this.init_Camera();
-        this.init_Lights();
-        this.load_Lights(); */
-        //this.init_Fbx();
-                 
+        this.init_Renderer();                  
     }
 });
 
