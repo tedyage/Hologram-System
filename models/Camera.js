@@ -17,6 +17,9 @@ var Camera = db.defineModel("camera",{
         type:Sequelize.INTEGER,
         allowNull:false,
         defaultValue:0,
+        get:function(){
+            return 1+this.getDataValue('fov');
+        }
     },
     aspect:{
         type:Sequelize.INTEGER,
@@ -63,15 +66,6 @@ var Camera = db.defineModel("camera",{
         allowNull:false,
         defaultValue:0.0,
     },
-},{
-    getterMethods:{
-        position:function(){
-            return [this.positionX,this.positionY,this.positionZ];
-        },
-        up:function(){
-            return [this.upX,this.upY,this.upZ];
-        }
-    }
 });
 
 module.exports = Camera;

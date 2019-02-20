@@ -18,7 +18,7 @@ var Light = db.defineModel("light",{
         allowNull:false,        
     },
     color:{
-        type:Sequelize.INTEGER,
+        type:Sequelize.STRING(10),
         allowNull:false,
     },
     intensity:{

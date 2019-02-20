@@ -99,7 +99,7 @@ var hologram_vm = new Vue({
         },
         //初始化场景数据
         init_data:function(){
-            this.$resource('/api/getdata').get()
+            this.$resource('/api/getdata?id=1').get()
             .then(function(res){
                 if(res.status === 200){
                     //初始化摄像机
@@ -114,12 +114,14 @@ var hologram_vm = new Vue({
                     this.scaleSpeed = res.body.scale.speed||this.scaleSpeed;
                     this.min_Scale = res.body.scale.min_scale||this.min_Scale;
                     this.max_Scale = res.body.scale.max_Scale||this.max_Scale;
-                }else if(res.status === 400){
-                    alert(res.body.code);
                 }
             },function(err){
-                console.error(err);
-                alert("error");
+                if(err.status===400){
+                    console.error(err.body.code);
+                    alert(err.body.message);
+                }else{
+                    console.error(err.body);
+                }               
             });
         },
         //初始化摄像机
