@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/model_init.js",
+            "program": "${workspaceFolder}/app.js",
             "env":{
                 "ENV_NODE":"development"
             }

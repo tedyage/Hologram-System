@@ -32,17 +32,46 @@ var Camera = db.defineModel("camera",{
         type:Sequelize.FLOAT(10,2),
         allowNull:false,
         defaultValue:0.0,
-    },
-    position:{
-        type:Sequelize.ARRAY(Sequelize.FLOAT(10,2)),
+    },   
+    positionX:{
+        type:Sequelize.FLOAT(10,2),
         allowNull:false,
-        defaultValue:[0.0,0.0,0.0],
+        defaultValue:0.0,
     },
-    up:{
-        type:Sequelize.ARRAY(Sequelize.FLOAT(10,2)),
+    positionY:{
+        type:Sequelize.FLOAT(10,2),
         allowNull:false,
-        defaultValue:[0.0,0.0,0.0],
+        defaultValue:0.0,
     },
+    positionZ:{
+        type:Sequelize.FLOAT(10,2),
+        allowNull:false,
+        defaultValue:0.0,
+    },
+    upX:{
+        type:Sequelize.FLOAT(10,2),
+        allowNull:false,
+        defaultValue:0.0,
+    },
+    upY:{
+        type:Sequelize.FLOAT(10,2),
+        allowNull:false,
+        defaultValue:0.0,
+    },
+    upZ:{
+        type:Sequelize.FLOAT(10,2),
+        allowNull:false,
+        defaultValue:0.0,
+    },
+},{
+    getterMethods:{
+        position:function(){
+            return [this.positionX,this.positionY,this.positionZ];
+        },
+        up:function(){
+            return [this.upX,this.upY,this.upZ];
+        }
+    }
 });
 
 module.exports = Camera;
