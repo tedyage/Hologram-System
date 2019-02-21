@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hologram-System</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width initial-scale=1 minimum-scale=1 maximum-scale=1 user-scalable=no shrink-to-fit=no"/>
+        <link rel="stylesheet" href="/static/css/bootstrap.css"/>
+        <link rel="stylesheet" href="/static/css/login.css"/>
+        <script type="text/javascript" src="/static/js/jquery.js"></script>    
+        <script type="text/javascript" src="/static/js/bootstrap.js"></script>   
+        <script type="text/javascript" src="/static/js/vue.js"></script>
+        <script type="text/javascript" src="/static/js/vue.component.js"></script>
+        <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+    </head>
+    <body>
+        <header>           
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container">
+                    <a class='navbar-brand' href='#'>Hologram</a>
+                </div>                      
+            </nav>          
+        </header>
+        <div class="container">
+            <div class="content">
+                <div class="row">
+                    <div class="col-lg-8 col-md-6 col-sm-6">
+                        <div class="login">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-6 col-sm-6">
+                                    <h2>Login</h2>
+                                </div>
+                            </div>
+                            <form id="form" method="POST" action="/admin/signin">
+                                <div class="form-row form-group">
+                                    <div class="col-sm-3">
+                                        <form-label for-input="username" name="用户名"></form-label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <form-input type="text" id="username" name="username" v-bind:value="username" v-on:input="username=$event" placeholder="username" ></form-input>
+                                    </div>
+                                </div>
+                                <div class="form-row form-group error" v-bind:class="{errorActive:error.username!==''}">
+                                    <div class="offset-3">
+                                        <span>{{error.username}}</span>
+                                    </div>
+                                </div>
+                                <div class="form-row form-group">
+                                    <div class="col-sm-3">
+                                        <form-label for-input="password" name="密&nbsp;&nbsp;&nbsp;&nbsp;码"></form-label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <form-input type="password" id="password" name="password" v-bind:value="password" v-on:input="password=$event" placeholder="password" ></form-input>
+                                    </div>
+                                </div>
+                                <div class="form-row form-group error" v-bind:class="{errorActive:error.password!==''}">
+                                    <div class="offset-3">
+                                        <span>{{error.password}}</span>
+                                    </div>
+                                </div>
+                                <div class="form-row form-group">
+                                    <div class="col-sm-3">
+                                        <form-label for-input="verificationCode" name="验证码"></form-label>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <form-input type="text" id="verificationCode" name="verificationCode" :value="verificationCode" @input="verificationCode=$event" placeholder="verification code" ></form-input>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <img @click='getCheckCode' style="width:100%;border:0.5px #ccc solid; height:35px;" :src="verificationImg"/>
+                                    </div>
+                                </div>
+                                <div class="form-row form-group error" v-bind:class="{errorActive:error.password!==''}">
+                                        <div class="offset-3">
+                                            <span>{{error.verificationCode}}</span>
+                                        </div>
+                                    </div>
+                                <div class="form-row form-group">
+                                    <div class="col-sm-12">
+                                        <button type="submit" class="btn btn-primary" style="width:50%; margin:0 25%;">Submit</button>
+                                    </div>
+                                </div>
+                            </form>                   
+                        </div>                
+                    </div>
+                    <div class="col-lg-8 col-md_6 col-sm-6"></div>
+                </div>
+            </div>
+        </div>
+        <footer></footer>
+        <script type="text/javascript" src="/static/js/login.js"></script>
+    </body>
+</html>

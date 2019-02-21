@@ -1,0 +1,33 @@
+var login_vm=new Vue({
+    el:"#form",
+    data:{
+        username:"",
+        password:'',
+        verificationCode:"",
+        verificationImg:"",
+        error:{
+            username:"",
+            password:"",
+            verificationCode:""
+        },
+    },
+    methods:{
+        getCheckCode:function(){
+            this.$resource("/api/admin/getCheckCode").get()
+            .then(function(res){
+                console.log(res);
+                this.verificationImg = res.body.img;
+            },function(err){
+                if(err.status===400){
+                    console.error(err.body.code);
+                    alert(err.body.message);
+                }else{
+                    console.error(err.body);
+                }  
+            });
+        }
+    },
+    mounted:function(){
+        this.getCheckCode();
+    }
+});
