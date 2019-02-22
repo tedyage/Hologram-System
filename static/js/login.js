@@ -66,7 +66,7 @@ var login_vm=new Vue({
                 password:this.md5_pass,
                 verificationCode:this.verificationCode,
             }).then(function(res){
-                console.log(res)
+                console.log(res);
             }).catch(function(res){
                 if(res.response.status==400){
                     var err = res.response.data;
