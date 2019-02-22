@@ -5,12 +5,13 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width initial-scale=1 minimum-scale=1 maximum-scale=1 user-scalable=no shrink-to-fit=no"/>
         <link rel="stylesheet" href="/static/css/bootstrap.css"/>
-        <link rel="stylesheet" href="/static/css/login.css"/>
-        <script type="text/javascript" src="/static/js/jquery.js"></script>    
+        <link rel="stylesheet" href="/static/css/login.css"/>  
+        <script type="text/javascript" src="/static/js/jquery.js"></script>
         <script type="text/javascript" src="/static/js/bootstrap.js"></script>   
         <script type="text/javascript" src="/static/js/vue.js"></script>
         <script type="text/javascript" src="/static/js/vue.component.js"></script>
-        <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script type="text/javascript" src="/static/js/md5.min.js"></script>
     </head>
     <body>
         <header>           
@@ -30,7 +31,7 @@
                                     <h2>Login</h2>
                                 </div>
                             </div>
-                            <form id="form" method="POST" action="/admin/signin">
+                            <form id="form" >
                                 <div class="form-row form-group">
                                     <div class="col-sm-3">
                                         <form-label for-input="username" name="用户名"></form-label>
@@ -68,14 +69,14 @@
                                         <img @click='getCheckCode' style="width:100%;border:0.5px #ccc solid; height:35px;" :src="verificationImg"/>
                                     </div>
                                 </div>
-                                <div class="form-row form-group error" v-bind:class="{errorActive:error.password!==''}">
-                                        <div class="offset-3">
-                                            <span>{{error.verificationCode}}</span>
-                                        </div>
+                                <div class="form-row form-group error" v-bind:class="{errorActive:error.verificationCode!==''}">
+                                    <div class="offset-3">
+                                        <span>{{error.verificationCode}}</span>
                                     </div>
+                                </div>
                                 <div class="form-row form-group">
                                     <div class="col-sm-12">
-                                        <button type="submit" class="btn btn-primary" style="width:50%; margin:0 25%;">Submit</button>
+                                        <button type="submit" class="btn btn-primary" style="width:50%; margin:0 25%;" @click.prevent="submit" v-on:keyup.enter="submit">Submit</button>
                                     </div>
                                 </div>
                             </form>                   
