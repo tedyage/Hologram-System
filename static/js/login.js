@@ -67,6 +67,8 @@ var login_vm=new Vue({
                 verificationCode:this.verificationCode,
             }).then(function(res){
                 console.log(res);
+                var token = res.data.token;
+                localStorage.setItem('authorization',token);
             }).catch(function(res){
                 if(res.response.status==400){
                     var err = res.response.data;

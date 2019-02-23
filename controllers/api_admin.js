@@ -2,6 +2,7 @@
 var captchapng = require("captchapng2");
 var APIError = require("../rest").APIError;
 var userService = require("../services/user_service");
+var jwt = require('../authentications/jwt_helper');
 
 module.exports={
     'GET /api/admin/getCheckCode': async(ctx,next)=>{
@@ -27,8 +28,9 @@ module.exports={
             throw new APIError("verificationCode:invalid","验证码失效，请重新获取。");
         if(data.verificationCode!=ctx.session.checkCode.toString())
             throw new APIError("verificationCode:error","验证码错误。");        
-        var result = await userService.login(data);
-        
+        var user = await userService.login(data);
+        var token = jwt.Sign(user);
+        var result = {token:token};
         ctx.rest(result);
     }
 }
