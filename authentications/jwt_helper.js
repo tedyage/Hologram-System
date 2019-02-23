@@ -21,6 +21,19 @@ var Sign = function(user){
     return token;
 };
 
+var Verify = function(token){
+    var user;
+    try{
+        user = jsonwebtoken.verify(token,secret_key,);
+    }
+    catch(e){
+        console.error(e);
+        throw new APIError("Verify:error","Verify has error.");
+    }
+    return user;
+};
+
 module.exports = {
-    Sign:Sign
+    Sign:Sign,
+    Verify:Verify
 };

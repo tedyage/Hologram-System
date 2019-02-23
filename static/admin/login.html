@@ -17,75 +17,50 @@
         <header>           
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container">
-                    <a class='navbar-brand' href='#'>Hologram</a>
+                    <div class="navbar-header">
+                        <a class='navbar-brand' href='#'>Hologram</a>
+                    </div>               
                 </div>                      
             </nav>          
         </header>
         <div class="container">
-            <div class="content">
-                <div class="row">
-                    <div class="col-lg-8 col-md-6 col-sm-6">
-                        <div class="login">
-                            <div class="row">
-                                <div class="col-lg-12 col-md-6 col-sm-6">
-                                    <h2>Login</h2>
-                                </div>
-                            </div>
-                            <form id="form" >
-                                <div class="form-row form-group">
-                                    <div class="col-sm-3">
-                                        <form-label for-input="username" name="用户名"></form-label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <form-input type="text" id="username" name="username" v-bind:value="username" v-on:input="username=$event" placeholder="username" ></form-input>
-                                    </div>
-                                </div>
-                                <div class="form-row form-group error" v-bind:class="{errorActive:error.username!==''}">
-                                    <div class="offset-3">
-                                        <span>{{error.username}}</span>
-                                    </div>
-                                </div>
-                                <div class="form-row form-group">
-                                    <div class="col-sm-3">
-                                        <form-label for-input="password" name="密&nbsp;&nbsp;&nbsp;&nbsp;码"></form-label>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        <form-input type="password" id="password" name="password" v-bind:value="password" v-on:input="password=$event" placeholder="password" ></form-input>
-                                    </div>
-                                </div>
-                                <div class="form-row form-group error" v-bind:class="{errorActive:error.password!==''}">
-                                    <div class="offset-3">
-                                        <span>{{error.password}}</span>
-                                    </div>
-                                </div>
-                                <div class="form-row form-group">
-                                    <div class="col-sm-3">
-                                        <form-label for-input="verificationCode" name="验证码"></form-label>
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <form-input type="text" id="verificationCode" name="verificationCode" :value="verificationCode" @input="verificationCode=$event" placeholder="verification code" ></form-input>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <img @click='getCheckCode' style="width:100%;border:0.5px #ccc solid; height:35px;" :src="verificationImg"/>
-                                    </div>
-                                </div>
-                                <div class="form-row form-group error" v-bind:class="{errorActive:error.verificationCode!==''}">
-                                    <div class="offset-3">
-                                        <span>{{error.verificationCode}}</span>
-                                    </div>
-                                </div>
-                                <div class="form-row form-group">
-                                    <div class="col-sm-12">
-                                        <button type="submit" class="btn btn-primary" style="width:50%; margin:0 25%;" @click.prevent="submit" v-on:keyup.enter="submit">Submit</button>
-                                    </div>
-                                </div>
-                            </form>                   
-                        </div>                
-                    </div>
-                    <div class="col-lg-4 col-md_6 col-sm-6">
-                        <p></p>
-                    </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p></p>
                 </div>
+                <div class="col-md-5">
+                    <div class="login">
+                        <h2>Login</h2>
+                        <form id="form" >
+                            <div class="form-row form-group">
+                                <form-label for-input="username" name="用户名"></form-label>
+                                <form-input type="text" id="username" name="username" v-bind:value="username" v-on:input="username=$event" placeholder="username" class="form-input"></form-input>
+                            </div>
+                            <div class="form-row form-group error" v-bind:class="{errorActive:error.username!==''}">
+                                <span style="margin-left:15%;">{{error.username}}</span>
+                            </div>
+                            <div class="form-row form-group">
+                                <form-label for-input="password" name="密&nbsp;&nbsp;&nbsp;&nbsp;码"></form-label>
+                                <form-input type="password" id="password" name="password" v-bind:value="password" v-on:input="password=$event" placeholder="password" class="form-input"></form-input>
+                            </div>
+                            <div class="form-row form-group error" v-bind:class="{errorActive:error.password!==''}">
+                                <span style="margin-left:15%;">{{error.password}}</span>
+                            </div>
+                            <div class="form-row form-group">
+                                <form-label for-input="verificationCode" name="验证码"></form-label>
+                                <form-input type="text" id="verificationCode" name="verificationCode" :value="verificationCode" @input="verificationCode=$event" placeholder="verification code" class="form-verification-input"></form-input>
+                                <img @click='getCheckCode' style="width:30%;border:0.5px #ccc solid; height:35px;" :src="verificationImg" />
+                            </div>
+                            <div class="form-row form-group error" v-bind:class="{errorActive:error.verificationCode!==''}">
+                                <span style="margin-left:15%;">{{error.verificationCode}}</span>
+                            </div>
+                            <div class="form-row form-group">
+                                    <button type="submit" class="btn btn-primary" style="width:50%; margin:0 25%;" @click.prevent="submit" v-on:keyup.enter="submit">Submit</button>
+                            </div>
+                        </form>                   
+                    </div>                
+                </div>
+                
             </div>
         </div>
         <footer></footer>

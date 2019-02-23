@@ -69,6 +69,7 @@ var login_vm=new Vue({
                 console.log(res);
                 var token = res.data.token;
                 localStorage.setItem('authorization',token);
+                location.href="/static/admin/list.html";
             }).catch(function(res){
                 if(res.response.status==400){
                     var err = res.response.data;

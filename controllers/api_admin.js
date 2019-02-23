@@ -32,5 +32,12 @@ module.exports={
         var token = jwt.Sign(user);
         var result = {token:token};
         ctx.rest(result);
-    }
+    },
+    'GET /api/admin/getAuthorization':async(ctx,next)=>{
+        var authorization = ctx.request.query.authorization;
+        if(!authorization)
+            throw new APIError("no data","没有获取认证信息。"); 
+        var result = jwt.Verify(authorization);
+        ctx.rest(result);
+    },
 }
