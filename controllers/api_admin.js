@@ -1,7 +1,9 @@
 'use strict'
 var captchapng = require("captchapng2");
 var APIError = require("../rest").APIError;
+var Authorization = require('../authentications/authorization');
 var userService = require("../services/user_service");
+var sceneService = require("../services/scene_service");
 var jwt = require('../authentications/jwt_helper');
 
 module.exports={
@@ -33,11 +35,16 @@ module.exports={
         var result = {token:token};
         ctx.rest(result);
     },
-    'GET /api/admin/getAuthorization':async(ctx,next)=>{
-        var authorization = ctx.request.query.authorization;
-        if(!authorization)
-            throw new APIError("no data","没有获取认证信息。"); 
-        var result = jwt.Verify(authorization);
-        ctx.rest(result);
+    'GET /api/admin/getAuthorization':async(ctx,next)=>{        
+        var authorization = ctx.authorization;
+                     
+        ctx.rest(authorization);
     },
+    'GET /api/admin/getScenesByPagenation':async(ctx,next)=>{
+        //认证用户信息
+        if(!ctx.authorization)
+            throw new APIError("Authorization:Error","用户信息认证失败。");       
+        var scenes = await sceneService.getScenesByPagenation(ctx.request.query);
+        ctx.rest(scenes);
+    }
 }

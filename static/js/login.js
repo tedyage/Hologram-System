@@ -94,6 +94,7 @@ var login_vm=new Vue({
         }
     },
     mounted:function(){
+        localStorage.clear();
         this.getCheckCode();
     }
 });

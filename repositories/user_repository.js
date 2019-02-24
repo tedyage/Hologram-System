@@ -7,8 +7,13 @@ var getUserByUsername = async(username)=>{
             username:username
         }
     });
+};
+
+var getUserById = async(id)=>{
+    return await user.findById(id);
 }
 
 module.exports = {
-    getUserByUsername:getUserByUsername
+    getUserByUsername:getUserByUsername,
+    getUserById:getUserById
 };

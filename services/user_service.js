@@ -9,9 +9,15 @@ var login = async(data)=>{
     if(user.password!=data.password)
         throw new APIError("user:error","用户名或密码不正确。");
     return user;
+};
+
+var getUserById = async(id)=>{
+    var user = await userRepository.getUserById(id);
+    return user;
 }
 
 module.exports={
-    login:login
+    login:login,
+    getUserById:getUserById
 };
 

@@ -5,32 +5,16 @@ var APIError = require('../rest').APIError;
 var secret_key = 'tedyage';
 
 var Sign = function(user){
-    var token = '';
-    try{
-        token = jsonwebtoken.sign({
-            id:user.id,
-            username:user.username
-        },secret_key,{
-            expiresIn:86400
-        });
-        console.log(token);
-    }catch(e){
-        console.error(e);
-        throw new APIError("Authentication:error","Authentication has error.")
-    }
-    return token;
+    return jsonwebtoken.sign({
+        id:user.id,
+        username:user.username
+    },secret_key,{
+        expiresIn:3600
+    });
 };
 
-var Verify = function(token){
-    var user;
-    try{
-        user = jsonwebtoken.verify(token,secret_key,);
-    }
-    catch(e){
-        console.error(e);
-        throw new APIError("Verify:error","Verify has error.");
-    }
-    return user;
+var Verify = function(token){   
+    return jsonwebtoken.verify(token,secret_key);   
 };
 
 module.exports = {

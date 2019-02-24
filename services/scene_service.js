@@ -81,6 +81,18 @@ var getSceneData = async(id)=>{
     return result;
 };
 
+var getScenesByPagenation = async(query)=>{
+    if(!query.pageIndex||query.pageIndex=='')
+        throw new APIError("getScenesByPagenation:Error","No pageIndex.");
+    if(!query.pageSize||query.pageSize=='')
+        throw new APIError("getScenesByPagenation:Error","No pageSize.");
+    query.pageSize = parseInt(query.pageSize);
+    query.pageIndex = parseInt(query.pageIndex);
+    var scenes = await sceneRepository.getScenesByPagenation(query);
+    return scenes;
+}
+
 module.exports = {
-    getSceneData:getSceneData
+    getSceneData:getSceneData,
+    getScenesByPagenation:getScenesByPagenation,
 };

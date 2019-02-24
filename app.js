@@ -37,6 +37,8 @@ app.use(template("views",{
 }));*/
 //引用Restify的方法
 app.use(rest.Restify());
+//引用Authorization的方法
+app.use(rest.Authorization());
 //引用controller的方法
 app.use(controller());
 
