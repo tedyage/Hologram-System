@@ -2,6 +2,23 @@
 const Sequelize = require('sequelize');
 const config = require('./config');
 
+//Date加入类型，加入Format方法，可将日期转换成yyyy-MM-dd hh:mm:ss类型的字符串
+Date.prototype.Format = function (fmt) { //author: meizz
+    let o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (let k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+};
+
 var sequelize = new Sequelize(config.database,config.username,config.password,{
     dialect:'mysql',
     host:config.host,
@@ -40,11 +57,17 @@ var defineModel = function(modelname,attributes){
     }
     attrs.createtime = {
         type:Sequelize.BIGINT,
-        allowNull:false
+        allowNull:false,
+        get(){           
+            return new Date(this.getDataValue('createtime')).Format('yyyy-MM-dd hh:mm:ss');
+        }
     };
     attrs.updatetime = {
         type:Sequelize.BIGINT,
-        allowNull:false
+        allowNull:false,
+        get(){           
+            return new Date(this.getDataValue('updatetime')).Format('yyyy-MM-dd hh:mm:ss');
+        }
     };
     attrs.version = {
         type:Sequelize.BIGINT,
