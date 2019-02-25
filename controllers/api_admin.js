@@ -40,7 +40,7 @@ module.exports={
                      
         ctx.rest(authorization);
     },
-    'GET /api/admin/getScenesByPagenation':async(ctx,next)=>{
+    'GET /api/admin/getScenesByPagination':async(ctx,next)=>{
         //认证用户信息
         if(!ctx.authorization)
             throw new APIError("Authorization:Error","用户信息认证失败。");       

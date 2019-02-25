@@ -12,4 +12,9 @@ Vue.component('form-input',{
         required:Boolean
     },
     template:`<input :type="type" :id="name" :name="name" :value="value" @input="$emit('input',$event.target.value)" :placeholder="placeholder" class="form-control" :required="required"/>`
-})
+});
+
+Vue.component('Pagination',{
+    props:{},
+    template:''
+});

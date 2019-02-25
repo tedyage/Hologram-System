@@ -4,7 +4,7 @@
         <title>Hologram-System</title>
         <meta charset="utf-8"/>
         <meta name='viewport' content="width=device-width initial-scale=1 maximum-scale=1 minimum-scale=1 user-scalable=no"/>
-        <link rel="stylesheet" href="/static/css/bootstrap.css"/>
+        <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="/static/css/list.css"/>
         <script type="text/javascript" src="/static/js/jquery.js"></script>
         <script type="text/javascript" src="/static/js/bootstrap.js"></script>
@@ -23,13 +23,13 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <a class="active" href="#">Home<span class="sr-only">(current)</span></a>
+                                    <a class="menu" href="#">Home<span class="sr-only">(current)</span></a>
                                 </div>
                                 <div class="col-md-3">
                                     <span style="color:#fff">Welcome! {{username}}</span>
                                 </div>
                                 <div class="col-md-3">
-                                    <a class="active" href="login.html">Logout</a>
+                                    <a class="menu" href="login.html">Logout</a>
                                 </div>
                             </div>
                         </div>
@@ -73,6 +73,17 @@
                             </tr>
                         </tbody>
                     </table> 
+                    <ul class="pagination justify-content-center">                        
+                        <li class="page-item" :class='prevClass'>
+                            <a class="page-link" href="javascript:void(0);" aria-label="Previous" @click.prevent="previous">Previous</a>
+                        </li>
+                        <li v-for="page in pageNumArr" class="page-item" :class='{active:page==pageIndex}'>
+                            <a class="page-link" href="javascript:void(0);" @click.prevent="switchPage(page)">{{page}}<span v-if="page==pageIndex" class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="page-item" :class='nextClass'>
+                            <a class="page-link" href="javascript:void(0);" aria-label="Next" @click.prevent="next">Next</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

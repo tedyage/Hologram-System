@@ -1,9 +1,10 @@
 .login{    
-    margin-top:10%;
+    margin-top:15%;
     margin-left:5%;
     margin-right:5%;
     padding:5%;
     width:90%;
+    min-width:400px;
     border:#ccc 1px solid;
     border-radius:8px;
     -webkit-border-radius:8px;

@@ -1,10 +1,10 @@
-.active{
+.menu{
     font-size:1.2em;
     color:rgb(206, 189, 189);
     text-decoration:none;
 }
 
-.active:hover{
+.menu:hover{
     color:#eeeeee;
     text-decoration:none;
 }
