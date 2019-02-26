@@ -1,29 +1,3 @@
-var nav_vm = new Vue({
-    el:"#nav",
-    data:{
-        username:'',
-        authorization:localStorage.getItem("authorization")
-    },
-    methods:{
-        isAuthorized:function(){
-            if(!this.authorization){
-                window.location.href="login.html";
-            }
-            axios.get("/api/admin/getAuthorization",{headers:{authorization:this.authorization}})
-            .then(function(res){
-                nav_vm.username = res.data.username;
-            })
-            .catch(function(err){
-                console.error(err.response);
-                window.location.href="login.html";
-            });
-        }
-    },
-    created:function(){
-        this.isAuthorized();
-    }
-})
-
 var list_vm=new Vue({
     el:"#HologramList",
     data:{
@@ -32,7 +6,7 @@ var list_vm=new Vue({
         scenes:[],
         pageSize:10,
         pageIndex:1,
-        total:500,
+        total:0,
         pageTotal:10,
     },
     computed:{
@@ -79,7 +53,15 @@ var list_vm=new Vue({
                 }
             }
             return arr;                    
-        }
+        },
+        paginationPost:function(){
+            return {
+                prevClass:this.prevClass,
+                nextClass:this.nextClass,
+                pageNumArr:this.pageNumArr,
+                pageIndex:this.pageIndex,
+            }
+        },
     },
     methods:{
         getScenesByPagenation:function(){
@@ -92,6 +74,7 @@ var list_vm=new Vue({
             }}).then(function(res){
                 console.log(res.data);
                 list_vm.scenes = res.data.rows;
+                list_vm.total = res.data.count;
             }).catch(function(err){
                 console.error(err.response);
             });
@@ -108,6 +91,9 @@ var list_vm=new Vue({
             this.pageIndex = parseInt(pageIndex);
             this.getScenesByPagenation();
         },
+        create:function(){
+            window.location.href="create.html";
+        }
     },
     mounted:function(){
         this.getScenesByPagenation();

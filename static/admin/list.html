@@ -5,6 +5,7 @@
         <meta charset="utf-8"/>
         <meta name='viewport' content="width=device-width initial-scale=1 maximum-scale=1 minimum-scale=1 user-scalable=no"/>
         <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="/static/css/nav.css"/>
         <link rel="stylesheet" href="/static/css/list.css"/>
         <script type="text/javascript" src="/static/js/jquery.js"></script>
         <script type="text/javascript" src="/static/js/bootstrap.js"></script>
@@ -13,29 +14,8 @@
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     </head>
     <body>
-        <header id="nav">           
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <div class="container">
-                    <div class="navbar-header">
-                        <a class='navbar-brand' href='#'>Hologram</a>
-                    </div> 
-                    <div class="collapse navbar-collapse" >
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <a class="menu" href="#">Home<span class="sr-only">(current)</span></a>
-                                </div>
-                                <div class="col-md-3">
-                                    <span style="color:#fff">Welcome! {{username}}</span>
-                                </div>
-                                <div class="col-md-3">
-                                    <a class="menu" href="login.html">Logout</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>              
-                </div>                      
-            </nav>         
+        <header id="nav">
+            <nav-component :username="username"></nav-component>
         </header>
         <div class="container" id="HologramList">
             <div class="row">
@@ -47,8 +27,11 @@
             </div>
             <div class="row query" >
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-primary" style="float:left;">查询</button>
+                    <button type="button" class="btn btn-primary" style="float:left;" @click.prevent="getScenesByPagenation();">查询</button>
                     <input id="query" style="float:left; width:50%; margin-left:10px;" v-model="keyword" class="form-control" focus>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-primary" style="float:right;" @click.prevent="create();">创建</button>
                 </div>
             </div>
             <div class="row" > 
@@ -73,21 +56,12 @@
                             </tr>
                         </tbody>
                     </table> 
-                    <ul class="pagination justify-content-center">                        
-                        <li class="page-item" :class='prevClass'>
-                            <a class="page-link" href="javascript:void(0);" aria-label="Previous" @click.prevent="previous">Previous</a>
-                        </li>
-                        <li v-for="page in pageNumArr" class="page-item" :class='{active:page==pageIndex}'>
-                            <a class="page-link" href="javascript:void(0);" @click.prevent="switchPage(page)">{{page}}<span v-if="page==pageIndex" class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="page-item" :class='nextClass'>
-                            <a class="page-link" href="javascript:void(0);" aria-label="Next" @click.prevent="next">Next</a>
-                        </li>
-                    </ul>
+                    <Pagination :post="paginationPost" @prevhandler="previous" @nexthandler="next" @pagehandler="switchPage"></Pagination>
                 </div>
             </div>
         </div>
         <footer></footer>
+        <script type="text/javascript" src="/static/js/nav.js"></script>
         <script type="text/javascript" src="/static/js/list.js"></script>
     </body>
 </html>

@@ -1,5 +1,6 @@
 'use strict'
 var scene = require("../models/Scene");
+const Op = require('sequelize').Op;
 
 var getSceneById = async(id)=>{
     var result = await scene.findById(id);
@@ -11,7 +12,9 @@ var getScenesByPagenation = async(query)=>{
     var offset = (query.pageIndex-1)*query.pageSize;
     var limit = query.pageSize;
     if(query.keyword&&query.keywork!='')
-        where.name = query.keyword;
+        where.name = {
+            [Op.like]:'%'+query.keyword+'%'
+        };
     var result = await scene.findAndCountAll({
         where:where,
         limit:limit,
