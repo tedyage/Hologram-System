@@ -1,6 +1,12 @@
 #Hologram-Create{
     margin-top:20px;
 }
+
+#Hologram-Create .title{
+    border-bottom:1px solid #000;
+    margin-bottom:3%;
+}
+
 .scene{
     padding:15px;
 }

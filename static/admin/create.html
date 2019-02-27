@@ -5,9 +5,8 @@
         <meta charset="utf-8"/>
         <meta name='viewport' content="width=device-width initial-scale=1 maximum-scale=1 minimum-scale=1 user-scalable=no"/>
         <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="/static/css/nav.css"/>
+        <link rel="stylesheet" href="/static/css/layout.css"/>
         <link rel="stylesheet" href="/static/css/create.css"/>
-        <link rel="stylesheet" href="/static/css/footer.css"/>
         <script type="text/javascript" src="/static/js/jquery.js"></script>
         <script type="text/javascript" src="/static/js/bootstrap.js"></script>
         <script type="text/javascript" src="/static/js/vue.js"></script>
@@ -15,24 +14,37 @@
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     </head>
     <body>
-        <header id="nav">
-            <nav-component :username="username"></nav-component>
-        </header>
-        <div class="container" id="Hologram-Create">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="scene">
-                        <div class="camera">
-                            <ul></ul>
+        <div class="layout">
+            <div>
+                <header id="nav">
+                    <nav-component :username="username"></nav-component>
+                </header>
+                <div class="content">
+                    <div class="container" id="Hologram-Create">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="title">
+                                    <h3>Hologram-List</h3>
+                                </div>                                                     
+                            </div>                
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="scene">
+                                    <div class="camera">
+                                        <ul></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div ></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8">
-
-                </div>
+                <footer></footer>
             </div>
-        </div>
-        <footer></footer>
+        </div>        
         <script type="text/javascript" src="/static/js/nav.js"></script>
     </body> 
 </html>

@@ -28,7 +28,7 @@ Vue.component('nav-component',{
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-6">
-                            <a class="menu" href="#">Home<span class="sr-only">(current)</span></a>
+                            <a class="menu" href="list.html">Home<span class="sr-only">(current)</span></a>
                         </div>
                         <div class="col-md-3">
                             <span style="color:#fff">Welcome! {{username}}</span>
