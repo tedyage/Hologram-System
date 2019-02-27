@@ -1,5 +1,6 @@
 #Hologram-Create{
-    margin-top:20px;
+    margin-top:1%;
+    height:97%;
 }
 
 #Hologram-Create .title{
@@ -8,9 +9,27 @@
 }
 
 .scene{
-    padding:15px;
+    padding:0px;
 }
-.camera{
+.error{
+    position: absolute;
+    margin-left:10px;
+    color:red;
+}
+.camera,.Light{
     width:100%;
     margin-bottom:15px;
+    border-bottom:1px solid #222222;
+}
+.showColor{
+    float: left;
+    width: 10%;
+    height: 30px;
+    margin-left: 10px;
+    border: 1px solid;
+}
+canvas{
+    background-color: #000;
+    width:100%;
+    height:100%;
 }

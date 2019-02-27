@@ -7,7 +7,7 @@ Vue.component('form-input',{
     props:{
         type:String,
         name:String,
-        value:String,
+        value:[String,Number],
         placeholder:String,
         required:Boolean
     },
