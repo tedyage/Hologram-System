@@ -1,6 +1,7 @@
 var create_vm = new Vue({
     el:"#Hologram-Create",
     data:{
+        authorization:localStorage.getItem("authorization"),
         canvasWidth:$("canvas")[0].clientWidth,
         canvasHeight:$("canvas")[0].clientHeight,
         stats:null, 
@@ -25,6 +26,7 @@ var create_vm = new Vue({
             color:"#ffffff",
             intensity:1.0
         },
+        currentModelFile:'',
         camera:{},
         renderer:{},
     },
@@ -61,6 +63,9 @@ var create_vm = new Vue({
                 }
             };
         },
+        model_arr:function(){
+
+        }
     },
     methods:{
         //初始化stats
@@ -74,7 +79,26 @@ var create_vm = new Vue({
             this.scene = new THREE.Scene();
             console.log("init_Scene");
         },
-        
+        //上传Model
+        uploadModel:function(event){
+            
+            console.log(event.target.files[0]);
+            var formData = new FormData();
+            formData.append("file",event.target.files[0]);
+            axios.post("/api/admin/uploadModel",formData,{
+                headers:{
+                    authorization:this.authorization,
+                    "content-type":"multipart/form-data",                    
+                }
+            }).then(function(res){
+                console.log(res.data);
+            }).catch(function(err){               
+                if(err.response.status==400){
+                    alert(err.response.data.message);
+                }
+                console.error(err.response.data);
+            })
+        }
     },
     created:function(){
         this.init_Stats();
@@ -82,5 +106,5 @@ var create_vm = new Vue({
     },
     mounted:function(){
 
-    }
-})
+    },
+});

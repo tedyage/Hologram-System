@@ -1,5 +1,6 @@
 'use strict'
 const koa = require('koa');
+const koa_body = require('koa-body');
 const koa_bodyParser = require('koa-bodyparser');
 const koa_session = require('koa-session');
 const static_file = require("./static_file");
@@ -10,6 +11,12 @@ const controller = require("./controller");
 //定义koa类对象
 var app = new koa();
 //加入app解析post参数功能
+app.use(koa_body({
+    multipart:true,
+    formidable:{
+        maxFileSize:1000*1024*1024
+    }
+}));
 app.use(koa_bodyParser());
 //加入app的session功能
 app.keys=['some secret hurr']

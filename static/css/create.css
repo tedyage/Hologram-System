@@ -16,7 +16,7 @@
     margin-left:10px;
     color:red;
 }
-.camera,.Light{
+.camera,.Light,.Model{
     width:100%;
     margin-bottom:15px;
     border-bottom:1px solid #222222;

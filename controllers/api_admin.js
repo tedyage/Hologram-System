@@ -5,6 +5,8 @@ var Authorization = require('../authentications/authorization');
 var userService = require("../services/user_service");
 var sceneService = require("../services/scene_service");
 var jwt = require('../authentications/jwt_helper');
+var fs = require('mz/fs');
+var path = require('path');
 
 module.exports={
     'GET /api/admin/getCheckCode': async(ctx,next)=>{
@@ -46,5 +48,34 @@ module.exports={
             throw new APIError("Authorization:Error","用户信息认证失败。");       
         var scenes = await sceneService.getScenesByPagenation(ctx.request.query);
         ctx.rest(scenes);
-    }
+    },
+    "POST /api/admin/uploadModel":async(ctx,next)=>{
+        //认证用户信息
+        if(!ctx.authorization)
+            throw new APIError("Authorization:Error","用户信息认证失败。");
+        if(!ctx.request.files||!ctx.request.files.file)
+            throw new APIError("Upload:Error","没有上传文件。");
+        var file = ctx.request.files.file;
+        console.log(file.type);
+        if(file.type!="application/octet-stream")
+            throw new APIError("Upload:Error","文件格式不正确。");
+        var rs = fs.createReadStream(file.path);
+        var writePath = path.join(__dirname,"../static/asset/models");
+        if(!(await fs.exists(writePath)))
+            throw new APIError("Upload:Error","上传路径不存在。");
+        //根据当前时间戳，新建子文件夹
+        var now = Date.now();
+        var writePath = path.join(writePath,now.toString());
+        await fs.mkdir(writePath);
+        //生成文件名
+        var filename = path.join(writePath,file.name);
+        let ws = fs.createWriteStream(filename);
+        rs.pipe(ws);
+        //生成结果url
+        var res = {
+            filename:file.name,
+            url:"/static/asset/models/"+now+"/"+file.name
+        };
+        ctx.rest(res);
+    } 
 }

@@ -34,42 +34,60 @@
                         </div>
                         <div class="row" style="height:80%;">
                             <div class="col-md-4">
-                                <div style="width:100%;height:100%;overflow-y:auto;">
-                                    <form class="scene">
-                                        <div class="camera">
-                                            <h4>Camera</h4>
-                                            <fieldset class="form-group" style="width:100%;">
-                                                <form-label form-input="fov" name="广&nbsp;&nbsp;&nbsp;&nbsp;角" style="float:left;"></form-label>
-                                                <form-input type="number" name="fov" placeholder="75" :value="cameraParam.fov" @input="cameraParam.fov=$event" max="180" min="1" style="width:20%;float:left;margin-left:10px;"></form-input>
-                                                <label class="col-form-label error">abc</label>
-                                            </fieldset>
-                                            <fieldset class="form-group" style="width:100%;">
-                                                <form-label form-input="aspect" name="宽高比" style="float:left;"></form-label>
-                                                <form-input type="number" name="aspect" placeholder="1" :value="cameraParam.aspect" @input="cameraParam.aspect=$event" max="10" min="1" style="width:20%;float:left;margin-left:10px;"></form-input>
-                                                <label class="col-form-label error"></label>
-                                            </fieldset>
-                                            <fieldset class="form-group" style="width:100%;">
-                                                <form-label name="位&nbsp;&nbsp;&nbsp;&nbsp;置" style="float:left;"></form-label>
-                                                <form-input type="number" name="positionX" placeholder="0" :value="cameraParam.positionX" @input="cameraParam.positionX=$event" style="width:20%;float:left;margin-left:10px;"></form-input>                                               
-                                                <form-input type="number" name="positionY" placeholder="0" :value="cameraParam.positionY" @input="cameraParam.positionY=$event" style="width:20%;float:left;margin-left:10px;"></form-input>
-                                                <form-input type="number" name="positionZ" placeholder="0" :value="cameraParam.positionZ" @input="cameraParam.positionZ=$event" style="width:20%;float:left;margin-left:10px;"></form-input>
-                                            </fieldset>
-                                            <fieldset class="form-group" style="width:100%;">
-                                                <form-label name="矢&nbsp;&nbsp;&nbsp;&nbsp;量" style="float:left;"></form-label>
-                                                <form-input type="number" name="upX" placeholder="0" :value="cameraParam.upX" @input="cameraParam.upX=$event" min = '0' max = '1' style="width:20%;float:left;margin-left:10px;"></form-input>                                               
-                                                <form-input type="number" name="upY" placeholder="0" :value="cameraParam.upY" @input="cameraParam.upY=$event" min = '0' max = '1' style="width:20%;float:left;margin-left:10px;"></form-input>
-                                                <form-input type="number" name="upZ" placeholder="0" :value="cameraParam.upZ" @input="cameraParam.upZ=$event" min = '0' max = '1' style="width:20%;float:left;margin-left:10px;"></form-input>
-                                            </fieldset>
-                                        </div>
-                                        <div class="Light">
-                                            <h4>Light</h4>
-                                            <fieldset>
-                                                <form-label name="环境光" style="float:left;"></form-label>
-                                                <form-input type="color" name="ambientColor" placeholder="#ffffff" :value="ambientLightParam.color" @input="ambientLightParam.color=$event" style="width:20%;float:left;margin-left:10px;margin-top:1.5%;"></form-input>
-                                                <div class="showColor" :style="{backgroundColor:ambientLightParam.color}"></div>
-                                            </fieldset>
-                                        </div>
-                                    </form>
+                                <div style="width:100%;height:100%;overflow-y:auto;">                                 
+                                    <div class="camera">
+                                        <h4>Camera</h4>
+                                        <fieldset class="form-group" style="width:100%;">
+                                            <form-label form-input="fov" name="广&nbsp;&nbsp;&nbsp;&nbsp;角" style="float:left;"></form-label>
+                                            <form-input type="number" name="fov" placeholder="75" :value="cameraParam.fov" @input="cameraParam.fov=$event" max="180" min="1" style="width:20%;float:left;margin-left:10px;"></form-input>
+                                            <label class="col-form-label error"></label>
+                                        </fieldset>
+                                        <fieldset class="form-group" style="width:100%;">
+                                            <form-label form-input="aspect" name="宽高比" style="float:left;"></form-label>
+                                            <form-input type="number" name="aspect" placeholder="1" :value="cameraParam.aspect" @input="cameraParam.aspect=$event" max="10" min="1" style="width:20%;float:left;margin-left:10px;"></form-input>
+                                            <label class="col-form-label error"></label>
+                                        </fieldset>
+                                        <fieldset class="form-group" style="width:100%;">
+                                            <form-label name="位&nbsp;&nbsp;&nbsp;&nbsp;置" style="float:left;"></form-label>
+                                            <form-input type="number" name="positionX" placeholder="0" :value="cameraParam.positionX" @input="cameraParam.positionX=$event" style="width:20%;float:left;margin-left:10px;"></form-input>                                               
+                                            <form-input type="number" name="positionY" placeholder="0" :value="cameraParam.positionY" @input="cameraParam.positionY=$event" style="width:20%;float:left;margin-left:10px;"></form-input>
+                                            <form-input type="number" name="positionZ" placeholder="0" :value="cameraParam.positionZ" @input="cameraParam.positionZ=$event" style="width:20%;float:left;margin-left:10px;"></form-input>
+                                        </fieldset>
+                                        <fieldset class="form-group" style="width:100%;">
+                                            <form-label name="矢&nbsp;&nbsp;&nbsp;&nbsp;量" style="float:left;"></form-label>
+                                            <form-input type="number" name="upX" placeholder="0" :value="cameraParam.upX" @input="cameraParam.upX=$event" min = '0' max = '1' style="width:20%;float:left;margin-left:10px;"></form-input>                                               
+                                            <form-input type="number" name="upY" placeholder="0" :value="cameraParam.upY" @input="cameraParam.upY=$event" min = '0' max = '1' style="width:20%;float:left;margin-left:10px;"></form-input>
+                                            <form-input type="number" name="upZ" placeholder="0" :value="cameraParam.upZ" @input="cameraParam.upZ=$event" min = '0' max = '1' style="width:20%;float:left;margin-left:10px;"></form-input>
+                                        </fieldset>
+                                    </div>
+                                    <div class="Light">
+                                        <h4>Light</h4>
+                                        <fieldset class="form-group">
+                                            <form-label name="环境光颜色" style="float:left;"></form-label>
+                                            <form-input type="color" name="ambientColor" placeholder="#ffffff" :value="ambientLightParam.color" @input="ambientLightParam.color=$event" style="width:20%;float:left;margin-left:10px;margin-top:1.5%;"></form-input>
+                                            <div class="showColor" :style="{backgroundColor:ambientLightParam.color}"></div>
+                                        </fieldset>
+                                        <fieldset class="form-group">
+                                            <form-label name="环境光强度" style="float:left;"></form-label>
+                                            <form-input type="number" name="ambientintensity" placeholder="1.0" min = "0" max = "1" step='0.1' :value="ambientLightParam.intensity" @input="ambientLightParam.intensity=$event" style="width:20%;float:left;margin-left:10px;"></form-input>
+                                        </fieldset>
+                                        <fieldset class="form-group">
+                                            <form-label name="太阳光颜色" style="float:left;"></form-label>
+                                            <form-input type="color" name="directionalColor" placeholder="#ffffff" :value="directionalLightParam.color" @input="directionalLightParam.color=$event" style="width:20%;float:left;margin-left:10px;margin-top:1.5%;"></form-input>
+                                            <div class="showColor" :style="{backgroundColor:directionalLightParam.color}"></div>
+                                        </fieldset>
+                                        <fieldset class="form-group">
+                                            <form-label name="太阳光强度" style="float:left;"></form-label>
+                                            <form-input type="number" name="directionalintensity" placeholder="1.0" min = "0" max = "1" step='0.1' :value="directionalLightParam.intensity" @input="directionalLightParam.intensity=$event" style="width:20%;float:left;margin-left:10px;"></form-input>
+                                        </fieldset>
+                                    </div>
+                                    <div class="Model">
+                                        <h4>Model</h4>
+                                        <fieldset class="form-group">
+                                            <form-label name="模型" style="float:left;"></form-label>                                               
+                                            <input type="file" name="Model" class="form-control form-input" style="width:80%;float:left;margin-left:10px;" @change="uploadModel"/>            
+                                        </fieldset>                                   
+                                    </div>
                                 </div>                                
                             </div>
                             <div class="col-md-8" id="renderer">
