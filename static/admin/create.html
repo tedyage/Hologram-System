@@ -64,21 +64,21 @@
                                         <h4>Light</h4>
                                         <fieldset class="form-group">
                                             <form-label name="环境光颜色" style="float:left;"></form-label>
-                                            <form-input type="color" name="ambientColor" placeholder="#ffffff" :value="ambientLightParam.color" @input="ambientLightParam.color=$event" style="width:20%;float:left;margin-left:10px;margin-top:1.5%;"></form-input>
+                                            <form-input type="color" name="ambientColor" placeholder="#ffffff" :value="ambientLightParam.color" @input="updateAmbientLightColor($event)" style="width:20%;float:left;margin-left:10px;margin-top:1.5%;"></form-input>
                                             <div class="showColor" :style="{backgroundColor:ambientLightParam.color}"></div>
                                         </fieldset>
                                         <fieldset class="form-group">
                                             <form-label name="环境光强度" style="float:left;"></form-label>
-                                            <form-input type="number" name="ambientintensity" placeholder="1.0" min = "0" max = "1" step='0.1' :value="ambientLightParam.intensity" @input="ambientLightParam.intensity=$event" style="width:20%;float:left;margin-left:10px;"></form-input>
+                                            <form-input type="number" name="ambientintensity" placeholder="1.0" min = "0" max = "1" step='0.1' :value="ambientLightParam.intensity" @input="updateAmbientLightIntensity($event)" style="width:20%;float:left;margin-left:10px;"></form-input>
                                         </fieldset>
                                         <fieldset class="form-group">
                                             <form-label name="太阳光颜色" style="float:left;"></form-label>
-                                            <form-input type="color" name="directionalColor" placeholder="#ffffff" :value="directionalLightParam.color" @input="directionalLightParam.color=$event" style="width:20%;float:left;margin-left:10px;margin-top:1.5%;"></form-input>
+                                            <form-input type="color" name="directionalColor" placeholder="#ffffff" :value="directionalLightParam.color" @input="updateDirectionalLightColor($event)" style="width:20%;float:left;margin-left:10px;margin-top:1.5%;"></form-input>
                                             <div class="showColor" :style="{backgroundColor:directionalLightParam.color}"></div>
                                         </fieldset>
                                         <fieldset class="form-group">
                                             <form-label name="太阳光强度" style="float:left;"></form-label>
-                                            <form-input type="number" name="directionalintensity" placeholder="1.0" min = "0" max = "1" step='0.1' :value="directionalLightParam.intensity" @input="directionalLightParam.intensity=$event" style="width:20%;float:left;margin-left:10px;"></form-input>
+                                            <form-input type="number" name="directionalintensity" placeholder="1.0" min = "0" max = "1" step='0.1' :value="directionalLightParam.intensity" @input="updateDirectionalLightIntensity($event)" style="width:20%;float:left;margin-left:10px;"></form-input>
                                         </fieldset>
                                     </div>
                                     <div class="Model">
@@ -93,10 +93,34 @@
                                             </li>
                                         </ul>                               
                                     </div>
+                                    <div class="Animation">
+                                        <h4>Animation</h4>
+                                        <fieldset class="form-group">
+                                            <form-label name="转动速度" style="float:left;"></form-label>
+                                            <form-input type="number" :value="rotateSpeed" @input="rotateSspeed=$event" min = 0 max = 10 step="0.1" style="width:60%;float:left;margin-left:10px;"></form-input>
+                                        </fieldset>
+                                        <fieldset class="form-group">
+                                            <form-label name="缩放速度" style="float:left;"></form-label>
+                                            <form-input type="number" :value="scaleSpeed" @input="scaleSpeed=$event" min = 1 max = 2 step="0.1" style="width:60%;float:left;margin-left:10px;"></form-input>
+                                        </fieldset>
+                                        <fieldset class="form-group">
+                                            <form-label name="放大比例" style="float:left;"></form-label>
+                                            <form-input type="number" :value="maxScale" @input="scaleSpeed=$event" min = 1 max = 2 step="0.1" style="width:60%;float:left;margin-left:10px;"></form-input>
+                                        </fieldset>
+                                    </div>
                                 </div>                                
                             </div>
-                            <div class="col-md-8" id="renderer" style="height:100%;">
-                                <canvas ></canvas>
+                            <div class="col-md-8" id="renderer">
+                                <canvas :style="canvasClass"></canvas>
+                                <!-- <div class="data">
+                                    <span>scene id is {{scene.id}}</span>
+                                    <span>camera id is {{camera.id}}</span>
+                                    <span>camera fov is {{camera.fov}}</span>
+                                    <span>camera aspect is {{camera.aspect}}</span>
+                                    <span>camera position is {{camera.position}}</span>
+                                    <span>camera up is {{camera.up}}</span>
+                                    <span v-for="(value,index) in light">light{{index+1}} color: {{value.color}}, intentsity:{{value.intensity}}</span>
+                                </div> -->
                             </div>
                         </div>
                     </div>

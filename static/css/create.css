@@ -16,7 +16,7 @@
     margin-left:10px;
     color:red;
 }
-.camera,.Light,.Model{
+.camera,.Light,.Model,Animation{
     width:100%;
     margin-bottom:15px;
     border-bottom:1px solid #222222;
@@ -28,8 +28,25 @@
     margin-left: 10px;
     border: 1px solid;
 }
+
+#renderer{
+    height:100%;
+    background-color:#000;
+}
 canvas{
     background-color: #000;
     width:100%;
     height:100%;
+}
+
+.data{
+    position:absolute;
+    top:0;
+    left:3%;
+    width:100%;
+    height:100%;
+    color:#fff;
+}
+.data>span{
+    display:block;
 }

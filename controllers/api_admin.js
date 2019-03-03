@@ -1,12 +1,11 @@
 'use strict'
-var captchapng = require("captchapng2");
-var APIError = require("../rest").APIError;
-var Authorization = require('../authentications/authorization');
-var userService = require("../services/user_service");
-var sceneService = require("../services/scene_service");
-var jwt = require('../authentications/jwt_helper');
-var fs = require('mz/fs');
-var path = require('path');
+const captchapng = require("captchapng2");
+const APIError = require("../rest").APIError;
+const userService = require("../services/user_service");
+const sceneService = require("../services/scene_service");
+const jwt = require('../authentications/jwt_helper');
+const fs = require('mz/fs');
+const path = require('path');
 
 module.exports={
     'GET /api/admin/getCheckCode': async(ctx,next)=>{
@@ -73,7 +72,7 @@ module.exports={
         //生成结果url
         var res = {
             filename:file.name,
-            url:"/static/asset/models/"+now+"/"+file.name
+            url:"/uploads/models/"+now+"/"+file.name
         };
         ctx.rest(res);
     } 

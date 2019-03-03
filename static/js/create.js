@@ -2,8 +2,8 @@ var create_vm = new Vue({
     el:"#Hologram-Create",
     data:{
         authorization:localStorage.getItem("authorization"),
-        canvasWidth:$("canvas").length>0?$("canvas")[0].clientWidth:0,
-        canvasHeight:$("canvas").length>0?$("canvas")[0].clientHeight:0,
+        div_width:$("#renderer").length>0?$("#renderer")[0].clientWidth:0,
+        div_height:$("#renderer").length>0?$("#renderer")[0].clientHeight:0,
         stats:null, 
         scene:{},
         cameraParam:{
@@ -19,10 +19,12 @@ var create_vm = new Vue({
             upZ:0.0,
         },
         ambientLightParam:{
+            name:"AmbientLight",
             color:'#ffffff',
             intensity:1.0
         },
         directionalLightParam:{
+            name:"DirectionalLight",
             color:"#ffffff",
             intensity:1.0
         },
@@ -32,10 +34,22 @@ var create_vm = new Vue({
         camera:{},   
         light:[],    
         renderer:{},
+        rotateSpeed:0,
+        scaleSpeed:0,
+        maxScale:1,
     },
     computed:{
         renderer_size:function(){
-            return this.canvasWidth>=this.canvasHeight?this.canvasHeight:this.canvasWidth;
+            return this.div_width>=this.div_height?this.div_height:this.div_width;
+        },
+        canvasClass:function(){
+            return{
+                width:this.renderer_size+'px',
+                height:this.renderer_size+'px',
+                position:'absolute',
+                top:(this.div_height-this.renderer_size)/2+'px',
+                left:(this.div_width-this.renderer_size)/2+'px'
+            };
         },
         views:function(){
             var view_size = this.renderer_size/3.0;
@@ -89,7 +103,7 @@ var create_vm = new Vue({
             this.camera.up.x = param.upX;
             this.camera.up.y = param.upY;
             this.camera.up.z = param.upZ;
-            this.camera.lookAt(new THREE.Vector3(0,0,0));
+            //this.camera.lookAt(new THREE.Vector3(0,0,0));
             console.log("init_Camera");
         },
         //更新广角
@@ -129,34 +143,38 @@ var create_vm = new Vue({
 
             var ambientParam = this.ambientLightParam;
             var ambientLight = new THREE.AmbientLight(ambientParam.color,ambientParam.intensity);
+            ambientLight.name=ambientParam.name;
             this.light.push(ambientLight);
             this.scene.add(ambientLight);
 
             var directionalParam = this.directionalLightParam;
             var directionalLight = new THREE.DirectionalLight(directionalParam.color,directionalParam.intensity);
+            directionalLight.name = directionalParam.name;
             directionalLight.castShadow = true;
             this.light.push(directionalLight);
             this.scene.add(directionalLight);
+        },
+        updateAmbientLightColor:function(value){
+            this.ambientLightParam.color = value;
+            this.scene.getObjectByName(this.ambientLightParam.name).color=value;
+        },
+        updateAmbientLightIntensity:function(value){
+            this.ambientLightParam.intensity = value;
+            this.scene.getObjectByName(this.ambientLightParam.name).intensity=value;
+        },
+        updateDirectionalLightColor:function(value){
+            this.directionalLightParam.color = value;
+            this.scene.getObjectByName(this.directionalLightParam.name).color=value;
+        },
+        updateDirectionalLightIntensity:function(value){
+            this.directionalLightParam.intensity = value;
+            this.scene.getObjectByName(this.directionalLightParam.name).intensity=value;
         },
         //初始化renderer
         init_Renderer:function(){
             this.renderer = new THREE.WebGLRenderer({canvas:$('canvas')[0],antialias:true});
             this.renderer.setSize(this.renderer_size,this.renderer_size,false);
             console.log("init_Renderer");
-        },
-        init_Model:function(){
-            var loader = new THREE.FBXLoader();
-            loader.load("/static/asset/threejs_mars.fbx",function(model){
-                console.log(model)
-                model.receiveShadow = true;
-                create_vm.model_arr.push(model);
-                create_vm.scene.add(model);
-                create_vm.filename_arr.push("threejs_mars.fbx");
-            },function(progress){
-                console.log(progress);
-            },function(error){
-                console.error(error);
-            })
         },
         //上传Model
         uploadModel:function(event){          
@@ -171,8 +189,8 @@ var create_vm = new Vue({
                 var loader = new THREE.FBXLoader();
                 console.log(res.data.url);
                 setTimeout(function(){
-                    loader.load(res.data.url,function(model){
-                        console.log(model)
+                    loader.load(res.data.url,function(model){                       
+                        model.name=res.data.filename;
                         model.receiveShadow = true;
                         create_vm.model_arr.push(model);
                         create_vm.scene.add(model);
@@ -189,45 +207,50 @@ var create_vm = new Vue({
                     alert(err.response.data.message);
                 }
                 console.error(err.response.data);
-            })
+            });
+        },
+        //每一帧的更新
+        update(){
+            if(this.stats){
+                this.stats.update();
+            }
         },
         //渲染图像
         render:function(){
             if(!this.camera.id)
                 return;
-            // for(var view in this.views){
-            //     var camera;
-            //     if(view==='left_view'){
-            //         camera = this.camera.clone().translateX(-1*this.camera.position.z).translateZ(-1*this.camera.position.z).rotateY(-Math.PI/2).rotateZ(Math.PI/2);
-            //     }else if(view==='back_view'){
-            //         camera = this.camera.clone().translateZ(-2*this.camera.position.z).rotateY(Math.PI).rotateZ(Math.PI);
-            //     }else if(view==='right_view'){
-            //         camera = this.camera.clone().translateX(this.camera.position.z).translateZ(-1*this.camera.position.z).rotateY(Math.PI/2).rotateZ(-Math.PI/2);
-            //     }else if(view==='front_view'){
-            //         camera = this.camera.clone();
-            //     }
-            //     this.renderer.setViewport(this.views[view].x,this.views[view].y,this.views[view].width,this.views[view].height);
-            //     this.renderer.setScissor(this.views[view].x,this.views[view].y,this.views[view].width,this.views[view].height);
-            //     this.renderer.setScissorTest(true);
-            //     this.renderer.setClearColor(new THREE.Color(0x000000));               
-            //     this.renderer.render(this.scene,camera);
-            // }      
-            this.renderer.render(this.scene,this.camera);    
+            for(var view in this.views){
+                var camera;
+                if(view==='left_view'){
+                    camera = this.camera.clone().translateX(-1*this.camera.position.z).translateZ(-1*this.camera.position.z).rotateY(-Math.PI/2).rotateZ(Math.PI/2);
+                }else if(view==='back_view'){
+                    camera = this.camera.clone().translateZ(-2*this.camera.position.z).rotateY(Math.PI).rotateZ(Math.PI);
+                }else if(view==='right_view'){
+                    camera = this.camera.clone().translateX(this.camera.position.z).translateZ(-1*this.camera.position.z).rotateY(Math.PI/2).rotateZ(-Math.PI/2);
+                }else if(view==='front_view'){
+                    camera = this.camera.clone();
+                }
+                this.renderer.setViewport(this.views[view].x,this.views[view].y,this.views[view].width,this.views[view].height);
+                this.renderer.setScissor(this.views[view].x,this.views[view].y,this.views[view].width,this.views[view].height);
+                this.renderer.setScissorTest(true);
+                this.renderer.setClearColor(new THREE.Color(0x000000));               
+                this.renderer.render(this.scene,camera);
+            }       
         },
         loop:function(){
             requestAnimationFrame(this.loop);
+            this.update();
             this.render();
         }
     },
     created:function(){
-        this.init_Stats();
         this.init_Scene();
         this.init_Camera();
-        this.init_Light();
-        this.init_Renderer();
-        this.init_Model();
+        this.init_Light();       
     },
     mounted:function(){
+        this.init_Stats();
+        this.init_Renderer();
         this.loop();
     },
 });
