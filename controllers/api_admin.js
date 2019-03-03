@@ -56,11 +56,10 @@ module.exports={
         if(!ctx.request.files||!ctx.request.files.file)
             throw new APIError("Upload:Error","没有上传文件。");
         var file = ctx.request.files.file;
-        console.log(file.type);
         if(file.type!="application/octet-stream")
             throw new APIError("Upload:Error","文件格式不正确。");
         var rs = fs.createReadStream(file.path);
-        var writePath = path.join(__dirname,"../static/asset/models");
+        var writePath = path.join(__dirname,"../uploads/models");
         if(!(await fs.exists(writePath)))
             throw new APIError("Upload:Error","上传路径不存在。");
         //根据当前时间戳，新建子文件夹

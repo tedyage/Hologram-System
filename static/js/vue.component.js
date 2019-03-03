@@ -11,7 +11,7 @@ Vue.component('form-input',{
         placeholder:String,
         required:Boolean
     },
-    template:`<input :type="type" :id="name" :name="name" :value="value" @input="$emit('input',$event.target.value)" :placeholder="placeholder" class="form-control" :required="required"/>`
+    template:`<input :type="type" :id="name" :name="name" :value="value" @input="$emit('input',$event.target.value)" @change="$emit('change',$event.target.value)" :placeholder="placeholder" class="form-control" :required="required"/>`
 });
 
 Vue.component('nav-component',{

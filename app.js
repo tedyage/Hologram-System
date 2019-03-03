@@ -33,7 +33,9 @@ app.use(async(ctx,next)=>{
     console.log(`${ctx.request.method} ${ctx.request.path} procceeded in ${processTime}ms.`);
 })
 //引用获取静态文件的方法
-app.use(static_file("/static/"));
+app.use(static_file("/static/","static"));
+//引用获取上传文件的方法
+app.use(static_file("/uploads/","uploads"));
 //引用渲染页面模版文件的方法
 /*var isdevelopment = process.env.ENV_NODE==="development";
 app.use(template("views",{

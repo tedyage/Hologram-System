@@ -167,6 +167,10 @@ var hologram_vm = new Vue({
                     hologram_vm.model_arr.push(model);
                     hologram_vm.rotate_arr.push(model.rotation);
                     hologram_vm.scale_arr.push(model.scale.x);
+                },function(progress){
+                    console.log(progress);
+                },function(error){
+                    console.error(error);
                 });
             }
             console.log("init_Models");

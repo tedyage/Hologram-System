@@ -6,6 +6,7 @@ module.exports = function(url,dir){
     //如果dir为空，则默认是static
     dir = dir||"static";
     dir = path.join(__dirname,dir);
+    
     return async(ctx,next)=>{
         //获取请求的路径
         var rpath = ctx.request.path;
