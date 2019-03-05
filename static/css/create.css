@@ -50,3 +50,9 @@ canvas{
 .data>span{
     display:block;
 }
+
+.delete{
+    position:absolute;
+    margin-top:-2%;
+    right:5px;
+}

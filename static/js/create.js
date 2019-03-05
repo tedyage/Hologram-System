@@ -36,7 +36,10 @@ var create_vm = new Vue({
         renderer:{},
         rotateSpeed:0,
         scaleSpeed:0,
+        minScale:1,
         maxScale:1,
+        currentScale:1,
+        scaling:false
     },
     computed:{
         renderer_size:function(){
@@ -80,6 +83,36 @@ var create_vm = new Vue({
                 }
             };
         },
+        ambientLightColorR:function(){
+            return parseFloat(parseInt('0x'+this.ambientLightParam.color.substr(1,2))/255) ;
+        },
+        ambientLightColorG:function(){
+            return parseFloat(parseInt('0x'+this.ambientLightParam.color.substr(3,2))/255) ;
+        },
+        ambientLightColorB:function(){
+            return parseFloat(parseInt('0x'+this.ambientLightParam.color.substr(5,2))/255) ;
+        },
+        directionalLightColorR:function(){
+            return parseFloat(parseInt('0x'+this.directionalLightParam.color.substr(1,2))/255);
+        },
+        directionalLightColorG:function(){
+            return parseFloat(parseInt('0x'+this.directionalLightParam.color.substr(5,2))/255);
+        },
+        directionalLightColorB:function(){
+            return parseFloat(parseInt('0x'+this.directionalLightParam.color.substr(1,2))/255);
+        },
+        action:function(){
+            if(this.model_arr.length<=0)
+                return '放大';
+            var model = this.model_arr[0];
+            return model.scale.x==this.minScale?"放大":model.scale.x==this.maxScale?"缩小":"缩放中";
+        },
+        scalable:function(){
+            if(this.model_arr.length<=0)
+                return false;
+            var model = this.model_arr[0];
+            return model.scale.x===1||model.scale.x===this.maxScale;
+        }   
     },
     methods:{
         //初始化stats
@@ -154,18 +187,26 @@ var create_vm = new Vue({
             this.light.push(directionalLight);
             this.scene.add(directionalLight);
         },
+        //修改环境光颜色
         updateAmbientLightColor:function(value){
             this.ambientLightParam.color = value;
-            this.scene.getObjectByName(this.ambientLightParam.name).color=value;
+            this.scene.getObjectByName(this.ambientLightParam.name).color.r=this.ambientLightColorR;
+            this.scene.getObjectByName(this.ambientLightParam.name).color.g=this.ambientLightColorG;
+            this.scene.getObjectByName(this.ambientLightParam.name).color.b=this.ambientLightColorBss;
         },
+        //修改环境光强度
         updateAmbientLightIntensity:function(value){
             this.ambientLightParam.intensity = value;
             this.scene.getObjectByName(this.ambientLightParam.name).intensity=value;
         },
+        //修改太阳光颜色
         updateDirectionalLightColor:function(value){
             this.directionalLightParam.color = value;
-            this.scene.getObjectByName(this.directionalLightParam.name).color=value;
+            this.scene.getObjectByName(this.directionalLightParam.name).color.r=this.directionalLightColorR;
+            this.scene.getObjectByName(this.directionalLightParam.name).color.g=this.directionalLightColorG;
+            this.scene.getObjectByName(this.directionalLightParam.name).color.b=this.directionalLightColorB;
         },
+        //修改太阳光强度
         updateDirectionalLightIntensity:function(value){
             this.directionalLightParam.intensity = value;
             this.scene.getObjectByName(this.directionalLightParam.name).intensity=value;
@@ -192,9 +233,11 @@ var create_vm = new Vue({
                     loader.load(res.data.url,function(model){                       
                         model.name=res.data.filename;
                         model.receiveShadow = true;
-                        create_vm.model_arr.push(model);
                         create_vm.scene.add(model);
                         create_vm.filename_arr.push(res.data);
+                        create_vm.model_arr.push(model);
+                        create_vm.currentScale = model.scale.x;
+                        create_vm.minScale=create_vm.currentScale;
                     },function(progress){
                         console.log(progress);
                     },function(error){
@@ -209,10 +252,81 @@ var create_vm = new Vue({
                 console.error(err.response.data);
             });
         },
+        //去除模型
+        removeModel(filename){
+            //场景中去除
+            var model = this.scene.getObjectByName(filename);
+            this.scene.remove(model);
+            //文件名数组中去除
+            var fileIndex = -1;
+            for(var i in this.filename_arr){
+                if(this.filename_arr[i].filename===filename){
+                    fileIndex = i;
+                }
+            }
+            if(fileIndex>=0){
+                this.filename_arr.splice(fileIndex,1);
+            }
+            //模型数组中去除
+            var modelIndex = -1;
+            for(var i in this.model_arr){
+                if(this.model_arr[i].name===filename){
+                    modelIndex = i;
+                }
+            }
+            if(modelIndex>=0){
+                this.model_arr.splice(modelIndex,1);
+            }
+            //清空上传文件控件的值
+            $("input[type='file']").val('');
+        },
         //每一帧的更新
         update(){
             if(this.stats){
                 this.stats.update();
+            }
+            //遍历每一个模型
+            for(var model of this.model_arr){
+                if(!this.scaling){
+                    model.rotation.y += this.rotateSpeed;
+                    if(model.rotation.x>0){
+                        model.rotation.x-=this.rotateSpeed;
+                    }else if(model.rotation.x<0){
+                        model.rotation.x+=this.rotateSpeed;
+                    }else{
+                        model.rotation.x = 0;
+                    }
+                }
+                else{
+                    console.log("scaling");
+                    //关闭缩放按钮的点击事件                   
+                    if(this.currentScale<this.maxScale){
+                        if(model.scale.x<this.maxScale){
+                            model.scale.x+=this.scaleSpeed;
+                            model.scale.y+=this.scaleSpeed;
+                            model.scale.z+=this.scaleSpeed;
+                            
+                        }else{                            
+                            model.scale.x=this.maxScale;
+                            model.scale.y=this.maxScale;
+                            model.scale.z=this.maxScale;
+                            this.scaling = !this.scalable
+                            this.currentScale = this.maxScale;
+                        }
+                    }else if(this.currentScale>this.minScale){
+                        if(model.scale.x>this.minScale){
+                            model.scale.x-=this.scaleSpeed;
+                            model.scale.y-=this.scaleSpeed;
+                            model.scale.z-=this.scaleSpeed;
+                        }else{
+                            model.scale.x=this.minScale;
+                            model.scale.y=this.minScale;
+                            model.scale.z=this.minScale;
+                            this.scaling = !this.scalable;
+                            this.currentScale = this.minScale;
+                        }
+                    }
+                }
             }
         },
         //渲染图像
@@ -241,6 +355,16 @@ var create_vm = new Vue({
             requestAnimationFrame(this.loop);
             this.update();
             this.render();
+        },
+        scale:function(){
+            if(this.maxScale<=this.minScale){
+                alert("缩放比例必须大于1");
+                return;
+            }else if(this.scaleSpeed<=0){
+                alert("缩放速度必须大于0");
+                return;
+            }
+            this.scaling = true;
         }
     },
     created:function(){

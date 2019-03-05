@@ -37,7 +37,7 @@
                                 <div style="width:100%;height:100%;overflow-y:auto;">                                 
                                     <div class="camera">
                                         <h4>Camera</h4>
-                                        <fieldset class="form-group" style="width:100%;">
+                                        <!-- <fieldset class="form-group" style="width:100%;">
                                             <form-label form-input="fov" name="广&nbsp;&nbsp;&nbsp;&nbsp;角" style="float:left;"></form-label>
                                             <form-input type="number" name="fov" placeholder="75" :value="cameraParam.fov" @input="updatefov($event)" max="180" min="1" style="width:20%;float:left;margin-left:10px;"></form-input>
                                             <label class="col-form-label error"></label>
@@ -46,19 +46,19 @@
                                             <form-label form-input="aspect" name="宽高比" style="float:left;"></form-label>
                                             <form-input type="number" name="aspect" placeholder="1" :value="cameraParam.aspect" @input="updateaspect($event)" max="10" min="1" style="width:20%;float:left;margin-left:10px;"></form-input>
                                             <label class="col-form-label error"></label>
-                                        </fieldset>
+                                        </fieldset> -->
                                         <fieldset class="form-group" style="width:100%;">
                                             <form-label name="位&nbsp;&nbsp;&nbsp;&nbsp;置" style="float:left;"></form-label>
                                             <form-input type="number" name="positionX" placeholder="0" :value="cameraParam.positionX" @input="updateposition('x',$event)" style="width:20%;float:left;margin-left:10px;"></form-input>                                               
                                             <form-input type="number" name="positionY" placeholder="0" :value="cameraParam.positionY" @input="updateposition('y',$event)" style="width:20%;float:left;margin-left:10px;"></form-input>
                                             <form-input type="number" name="positionZ" placeholder="0" :value="cameraParam.positionZ" @input="updateposition('z',$event)" style="width:20%;float:left;margin-left:10px;"></form-input>
                                         </fieldset>
-                                        <fieldset class="form-group" style="width:100%;">
+                                        <!-- <fieldset class="form-group" style="width:100%;">
                                             <form-label name="矢&nbsp;&nbsp;&nbsp;&nbsp;量" style="float:left;"></form-label>
                                             <form-input type="number" name="upX" placeholder="0" :value="cameraParam.upX" @input="updateup('x',$event)" min = '0' max = '1' style="width:20%;float:left;margin-left:10px;"></form-input>                                               
                                             <form-input type="number" name="upY" placeholder="0" :value="cameraParam.upY" @input="updateup('y',$event)" min = '0' max = '1' style="width:20%;float:left;margin-left:10px;"></form-input>
                                             <form-input type="number" name="upZ" placeholder="0" :value="cameraParam.upZ" @input="updateup('z',$event)" min = '0' max = '1' style="width:20%;float:left;margin-left:10px;"></form-input>
-                                        </fieldset>
+                                        </fieldset> -->
                                     </div>
                                     <div class="Light">
                                         <h4>Light</h4>
@@ -88,8 +88,9 @@
                                             <input type="file" name="Model" class="form-control form-input" style="width:80%;float:left;margin-left:10px;" @change="uploadModel"/>            
                                         </fieldset>    
                                         <ul>
-                                            <li v-for="model in filename_arr">
+                                            <li v-for="model in filename_arr" style="position:relative;">
                                                 <span>{{model.filename}}</span>
+                                                <button type="button" class="btn btn-link delete" @click="removeModel(model.filename)">Delete</button>
                                             </li>
                                         </ul>                               
                                     </div>
@@ -97,30 +98,27 @@
                                         <h4>Animation</h4>
                                         <fieldset class="form-group">
                                             <form-label name="转动速度" style="float:left;"></form-label>
-                                            <form-input type="number" :value="rotateSpeed" @input="rotateSspeed=$event" min = 0 max = 10 step="0.1" style="width:60%;float:left;margin-left:10px;"></form-input>
-                                        </fieldset>
-                                        <fieldset class="form-group">
-                                            <form-label name="缩放速度" style="float:left;"></form-label>
-                                            <form-input type="number" :value="scaleSpeed" @input="scaleSpeed=$event" min = 1 max = 2 step="0.1" style="width:60%;float:left;margin-left:10px;"></form-input>
+                                            <form-input type="number" :value="rotateSpeed" @input="rotateSpeed=parseFloat($event)" min = '0' max = '10' step="0.01" style="width:60%;float:left;margin-left:10px;"></form-input>
                                         </fieldset>
                                         <fieldset class="form-group">
                                             <form-label name="放大比例" style="float:left;"></form-label>
-                                            <form-input type="number" :value="maxScale" @input="scaleSpeed=$event" min = 1 max = 2 step="0.1" style="width:60%;float:left;margin-left:10px;"></form-input>
+                                            <form-input type="number" :value="maxScale" @input="maxScale=parseFloat($event)" min = '1'  step="0.1" style="width:60%;float:left;margin-left:10px;"></form-input>
                                         </fieldset>
+                                        <fieldset class="form-group">
+                                            <form-label name="缩放速度" style="float:left;"></form-label>
+                                            <form-input type="number" :value="scaleSpeed" @input="scaleSpeed=parseFloat($event) " min = '0' step="0.01" style="width:60%;float:left;margin-left:10px;"></form-input>
+                                        </fieldset>
+                                        <fieldset class="form-group">
+                                            <button type="button" class="btn btn-primary" :disabled="!scalable" @click="scale">{{action}}</button>
+                                        </fieldset>                                
                                     </div>
                                 </div>                                
                             </div>
                             <div class="col-md-8" id="renderer">
                                 <canvas :style="canvasClass"></canvas>
-                                <!-- <div class="data">
-                                    <span>scene id is {{scene.id}}</span>
-                                    <span>camera id is {{camera.id}}</span>
-                                    <span>camera fov is {{camera.fov}}</span>
-                                    <span>camera aspect is {{camera.aspect}}</span>
-                                    <span>camera position is {{camera.position}}</span>
-                                    <span>camera up is {{camera.up}}</span>
-                                    <span v-for="(value,index) in light">light{{index+1}} color: {{value.color}}, intentsity:{{value.intensity}}</span>
-                                </div> -->
+                                <div class="data">
+                                    <!-- <span>The object in scene is {{scene.children.length}}</span> -->
+                                </div>
                             </div>
                         </div>
                     </div>
