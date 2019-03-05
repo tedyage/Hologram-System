@@ -34,7 +34,14 @@
                         </div>
                         <div class="row" style="height:80%;">
                             <div class="col-md-4" style="height:100%;">
-                                <div style="width:100%;height:100%;overflow-y:auto;">                                 
+                                <div style="width:100%;height:100%;overflow-y:auto;">   
+                                    <div class="scene">
+                                        <h4>Scene</h4>
+                                        <fieldset class="form-group">
+                                            <form-label name="场景名称" style="float:left;"></form-label>
+                                            <form-input type="text" :value="sceneName" @input="sceneName=$event" placeholder="请输入场景名称" style="width:60%;float:left;margin-left:10px;"></form-input>
+                                        </fieldset>
+                                    </div>                              
                                     <div class="camera">
                                         <h4>Camera</h4>
                                         <!-- <fieldset class="form-group" style="width:100%;">
@@ -111,6 +118,12 @@
                                         <fieldset class="form-group">
                                             <button type="button" class="btn btn-primary" :disabled="!scalable" @click="scale">{{action}}</button>
                                         </fieldset>                                
+                                    </div>
+                                    <div class="Submit">
+                                        <h4>Submit</h4>
+                                        <fieldset class="form-group">
+                                            <button type="button" class="btn btn-primary save" @click="save">保存</button>
+                                        </fieldset>                               
                                     </div>
                                 </div>                                
                             </div>

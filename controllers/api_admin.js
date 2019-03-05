@@ -75,5 +75,12 @@ module.exports={
             url:"/uploads/models/"+now+"/"+file.name
         };
         ctx.rest(res);
-    } 
+    }, 
+    "POST /api/admin/addScene":async(ctx,next)=>{
+        //认证用户信息
+        if(!ctx.authorization)
+            throw new APIError("Authorization:Error","用户信息认证失败。");
+        var data = ctx.request.body;
+        ctx.rest("abc");
+    }
 }

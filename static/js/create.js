@@ -6,6 +6,7 @@ var create_vm = new Vue({
         div_height:$("#renderer").length>0?$("#renderer")[0].clientHeight:0,
         stats:null, 
         scene:{},
+        sceneName:'',
         cameraParam:{
             fov:75,
             aspect:1,
@@ -152,11 +153,11 @@ var create_vm = new Vue({
         //更新摄像机位置
         updateposition:function(direction, value){
             if(direction=="x"){
-                this.cameraParam.positionX = value;
+                this.cameraParam.positionX = parseFloat(value);
             }else if(direction=="y"){
-                this.cameraParam.positionY = value;
+                this.cameraParam.positionY = parseFloat(value);
             }else if(direction=="z"){
-                this.cameraParam.positionZ = value;
+                this.cameraParam.positionZ = parseFloat(value);
             }
             this.camera.position[direction] = parseFloat(value);
         },
@@ -196,8 +197,8 @@ var create_vm = new Vue({
         },
         //修改环境光强度
         updateAmbientLightIntensity:function(value){
-            this.ambientLightParam.intensity = value;
-            this.scene.getObjectByName(this.ambientLightParam.name).intensity=value;
+            this.ambientLightParam.intensity = parseFloat(value) ;
+            this.scene.getObjectByName(this.ambientLightParam.name).intensity=parseFloat(value);
         },
         //修改太阳光颜色
         updateDirectionalLightColor:function(value){
@@ -208,8 +209,8 @@ var create_vm = new Vue({
         },
         //修改太阳光强度
         updateDirectionalLightIntensity:function(value){
-            this.directionalLightParam.intensity = value;
-            this.scene.getObjectByName(this.directionalLightParam.name).intensity=value;
+            this.directionalLightParam.intensity = parseFloat(value) ;
+            this.scene.getObjectByName(this.directionalLightParam.name).intensity=parseFloat(value) ;
         },
         //初始化renderer
         init_Renderer:function(){
@@ -351,11 +352,13 @@ var create_vm = new Vue({
                 this.renderer.render(this.scene,camera);
             }       
         },
+        //循环每一帧
         loop:function(){
             requestAnimationFrame(this.loop);
             this.update();
             this.render();
         },
+        //启动缩放
         scale:function(){
             if(this.maxScale<=this.minScale){
                 alert("缩放比例必须大于1");
@@ -365,6 +368,62 @@ var create_vm = new Vue({
                 return;
             }
             this.scaling = true;
+        },
+        //提交场景信息
+        save:function(){ 
+            if(this.sceneName==""){
+                alert("请输入场景名称。");   
+                return;
+            }                   
+            if(this.filename_arr.length<=0){
+                alert("请您导入模型。");
+                return;
+            }               
+            var data = {
+                scene:{
+                    name:this.sceneName,
+                },
+                camera:{
+                    fov:this.cameraParam.fov,
+                    aspect:this.cameraParam.aspect,
+                    near:this.cameraParam.near,
+                    far:this.cameraParam.far,
+                    positionX:this.cameraParam.positionX,
+                    positionY:this.cameraParam.positionY,
+                    positionZ:this.cameraParam.positionZ,
+                    upX:this.cameraParam.upX,
+                    upY:this.cameraParam.upY,
+                    upZ:this.cameraParam.upZ
+                },
+                ambientLight:{
+                    color: '0x'+this.ambientLightParam.color.substr(1,6),
+                    intensity:this.ambientLightParam.intensity,
+                },
+                directionalLight:{
+                    color: '0x'+this.directionalLightParam.color.substr(1,6),
+                    intentsity:this.directionalLightParam.intensity,
+                },
+                animation:{
+                    rotateSpeed:this.rotateSpeed,
+                    minScale:this.minScale,
+                    maxScale:this.maxScale,
+                    scaleSpeed:this.scaleSpeed,
+                },
+                fbses:[]
+            };
+            for(var file of this.filename_arr){
+                data.fbses.push(file.url);
+            };
+            axios.post("/api/admin/addScene",data,{
+                headers:{
+                    authorization:this.authorization,
+                    contentType:'application/json'
+                }
+            }).then(function(res){
+                console.log(res);
+            }).catch(function(err){
+                console.error(err.response);
+            });
         }
     },
     created:function(){
